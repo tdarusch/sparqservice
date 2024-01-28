@@ -8,6 +8,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
@@ -22,24 +23,31 @@ public class Profile {
   private Long id;
 
   @OneToOne(cascade = CascadeType.ALL)
+  @JoinColumn(name = "id")
   private Contact contact;
 
   @OneToMany(cascade = CascadeType.ALL)
+  @JoinColumn(name = "id")
   private List<Education> education;
 
   @OneToMany(cascade = CascadeType.ALL)
+  @JoinColumn(name = "id")
   private List<Job> workHistory;
 
   @OneToOne(cascade = CascadeType.ALL)
+  @JoinColumn(name = "id")
   private About about;
 
   @OneToMany(cascade = CascadeType.ALL)
+  @JoinColumn(name = "id")
   private List<Project> projects;
 
   @OneToMany(cascade = CascadeType.ALL)
+  @JoinColumn(name = "id")
   private List<Skill> skills;
 
   @OneToMany(cascade = CascadeType.ALL)
+  @JoinColumn(name = "id")
   private List<Equivalency> industryEquivalency;
 
   private String name;

@@ -12,6 +12,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.GenerationType;
@@ -26,6 +27,7 @@ public class Project {
   private Long id;
 
   @OneToMany(cascade = CascadeType.ALL)
+  @JoinColumn(name = "id")
   private List<TechnologyListEntry> technologies;
 
   @DateTimeFormat(pattern = "MM/yyyy")
@@ -35,7 +37,10 @@ public class Project {
   private Date endDate;
   
   private String name;
+
+  @Column(columnDefinition = "text")
   private String description;
+
   private String type;
 
   public Long getId() {

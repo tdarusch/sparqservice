@@ -18,7 +18,10 @@ public class Contact {
 
   private String firstName;
   private String lastName;
+
+  @Column(columnDefinition = "text")
   private String headline;
+
   private String email;
   private String phone;
 

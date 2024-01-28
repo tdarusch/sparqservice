@@ -16,6 +16,7 @@ public class BulletListEntry {
   @Column(columnDefinition = "serial")
   private Long id;
 
+  @Column(columnDefinition = "text")
   private String text;
 
   public Long getId() {

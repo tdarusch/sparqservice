@@ -12,6 +12,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.GenerationType;
@@ -26,6 +27,7 @@ public class Job {
   private Long id;
 
   @OneToMany(cascade = CascadeType.ALL)
+  @JoinColumn(name = "id")
   private List<TechnologyListEntry> technologies;
 
   @DateTimeFormat(pattern = "MM/yyyy")
@@ -36,8 +38,11 @@ public class Job {
 
   private String company;
   private String role;
+
+  @Column(columnDefinition = "text")
   private String responsibilities;
-  private Boolean currentRole;
+
+  private Boolean current;
 
   public Long getId() {
     return id;
@@ -95,12 +100,12 @@ public class Job {
     this.responsibilities = responsibilities;
   }
 
-  public Boolean getCurrentRole() {
-    return currentRole;
+  public Boolean getCurrent() {
+    return current;
   }
 
-  public void setCurrentRole(Boolean currentRole) {
-    this.currentRole = currentRole;
+  public void setCurrent(Boolean current) {
+    this.current = current;
   }
 
 }
