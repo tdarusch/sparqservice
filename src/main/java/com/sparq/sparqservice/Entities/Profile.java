@@ -51,7 +51,6 @@ public class Profile {
   private List<Equivalency> industryEquivalency;
 
   private String name;
-  private Boolean master;
 
   public Long getId() {
     return id;
@@ -123,14 +122,6 @@ public class Profile {
 
   public void setName(String name) {
     this.name = name;
-  }
-
-  public Boolean getMaster() {
-    return master;
-  }
-
-  public void setMaster(Boolean master) {
-    this.master = master;
   }
 
 }

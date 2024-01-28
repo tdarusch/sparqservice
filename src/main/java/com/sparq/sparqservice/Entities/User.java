@@ -16,6 +16,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -40,6 +41,14 @@ public class User {
   @JoinColumn(name = "user_id")
   List<Profile> profiles;
 
+  @OneToMany(cascade = CascadeType.ALL)
+  @JoinColumn(name = "user_id")
+  List<Profile> savedProfiles;
+
+  @OneToOne(cascade = CascadeType.ALL)
+  @JoinColumn(name = "user_id")
+  Profile masterProfile;
+  
   public UUID getId() {
     return id;
   }
@@ -90,6 +99,22 @@ public class User {
 
   public void setProfiles(List<Profile> profiles) {
     this.profiles = profiles;
+  }
+
+  public List<Profile> getSavedProfiles() {
+    return savedProfiles;
+  }
+
+  public void setSavedProfiles(List<Profile> savedProfiles) {
+    this.savedProfiles = savedProfiles;
+  }
+
+  public Profile getMasterProfile() {
+    return masterProfile;
+  }
+
+  public void setMasterProfile(Profile masterProfile) {
+    this.masterProfile = masterProfile;
   }
 
 }
