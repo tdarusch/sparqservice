@@ -1,27 +1,31 @@
 package com.sparq.sparqservice.Entities;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
+import java.util.Collection;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.oidc.OidcIdToken;
+import org.springframework.security.oauth2.core.oidc.OidcUserInfo;
+import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 
-import com.sparq.sparqservice.Entities.UtilEntities.Provider;
-
+import jakarta.annotation.Nullable;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "USERS", schema = "sparq")
-public class User {
+public class User implements UserDetails, OidcUser {
   
   @Id
   @GenericGenerator(name = "UUIDGenerator", strategy = "uuid2")
@@ -33,24 +37,82 @@ public class User {
   private String password;
   private Boolean enabled;
   private Boolean admin;
+  private String imageUrl;
+  private String email;
+  private String name;
 
-  @Enumerated(EnumType.STRING)
-  private Provider provider;
-
+  @Nullable
   @OneToMany(cascade = CascadeType.ALL)
-  @JoinColumn(name = "user_id")
   List<Profile> profiles;
 
+  @Nullable
   @OneToMany(cascade = CascadeType.ALL)
-  @JoinColumn(name = "user_id")
   List<Profile> savedProfiles;
 
+  @Nullable
   @OneToOne(cascade = CascadeType.ALL)
-  @JoinColumn(name = "user_id")
   Profile masterProfile;
+
+  @Override
+  public String getName() {
+    return Objects.nonNull(name) ? name : username;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  @Override
+  public Map<String, Object> getAttributes() {
+    return null;
+  }
+
+  @Override
+  public Collection<? extends GrantedAuthority> getAuthorities() {
+    return null;
+  }
+
+  @Override 
+  public boolean isAccountNonExpired() {
+    return enabled;
+  }
+
+  @Override
+  public boolean isAccountNonLocked() {
+    return enabled;
+  }
+
+  @Override
+  public boolean isCredentialsNonExpired() {
+    return enabled;
+  }
+
+  @Override
+  public boolean isEnabled() {
+    return enabled;
+  }
+
+  @Override
+  public Map<String, Object> getClaims() {
+    return null;
+  }
+
+  @Override
+  public OidcUserInfo getUserInfo() {
+    return null;
+  }
+
+  @Override
+  public OidcIdToken getIdToken() {
+    return null;
+  }
   
   public UUID getId() {
     return id;
+  }
+
+  public void setId(UUID id) {
+    this.id = id;
   }
 
   public String getUsername() {
@@ -62,7 +124,7 @@ public class User {
   }
 
   public String getPassword() {
-    return password;
+    return null;
   }
 
   public void setPassword(String password) {
@@ -83,14 +145,6 @@ public class User {
 
   public void setAdmin(Boolean admin) {
     this.admin = admin;
-  }
-
-  public Provider getProvider() {
-    return provider;
-  }
-
-  public void setProvider(Provider provider) {
-    this.provider = provider;
   }
 
   public List<Profile> getProfiles() {
@@ -115,6 +169,22 @@ public class User {
 
   public void setMasterProfile(Profile masterProfile) {
     this.masterProfile = masterProfile;
+  }
+
+  public String getEmail() {
+    return email;
+  }
+
+  public void setEmail(String email) {
+    this.email = email;
+  }
+
+  public String getImageUrl() {
+    return imageUrl;
+  }
+
+  public void setImageUrl(String imageUrl) {
+    this.imageUrl = imageUrl;
   }
 
 }
