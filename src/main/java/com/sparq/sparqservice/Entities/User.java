@@ -41,17 +41,14 @@ public class User implements UserDetails, OidcUser {
   private String email;
   private String name;
 
-  @Nullable
-  @OneToMany(cascade = CascadeType.ALL)
+  @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
   List<Profile> profiles;
 
-  @Nullable
-  @OneToMany(cascade = CascadeType.ALL)
+  @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
   List<Profile> savedProfiles;
 
-  @Nullable
-  @OneToOne(cascade = CascadeType.ALL)
-  Profile masterProfile;
+  // @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+  // Profile masterProfile;
 
   @Override
   public String getName() {
@@ -163,13 +160,13 @@ public class User implements UserDetails, OidcUser {
     this.savedProfiles = savedProfiles;
   }
 
-  public Profile getMasterProfile() {
-    return masterProfile;
-  }
+  // public Profile getMasterProfile() {
+  //   return masterProfile;
+  // }
 
-  public void setMasterProfile(Profile masterProfile) {
-    this.masterProfile = masterProfile;
-  }
+  // public void setMasterProfile(Profile masterProfile) {
+  //   this.masterProfile = masterProfile;
+  // }
 
   public String getEmail() {
     return email;

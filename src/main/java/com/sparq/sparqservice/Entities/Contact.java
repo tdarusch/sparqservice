@@ -25,6 +25,9 @@ public class Contact {
   private String email;
   private String phone;
 
+  @Column(name = "profile_id")
+  private Long profileId;
+
   public Long getId() {
     return id;
   }

@@ -22,32 +22,26 @@ public class Profile {
   @Column(columnDefinition = "serial")
   private Long id;
 
-  @OneToOne(cascade = CascadeType.ALL)
-  @JoinColumn(name = "id")
+  @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+  @JoinColumn(name = "profile_id")
   private Contact contact;
-
-  @OneToMany(cascade = CascadeType.ALL)
-  @JoinColumn(name = "id")
+  
+  @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Education> education;
 
-  @OneToMany(cascade = CascadeType.ALL)
-  @JoinColumn(name = "id")
+  @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Job> workHistory;
 
-  @OneToOne(cascade = CascadeType.ALL)
-  @JoinColumn(name = "id")
+  @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
   private About about;
 
-  @OneToMany(cascade = CascadeType.ALL)
-  @JoinColumn(name = "id")
+  @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Project> projects;
 
-  @OneToMany(cascade = CascadeType.ALL)
-  @JoinColumn(name = "id")
+  @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Skill> skills;
 
-  @OneToMany(cascade = CascadeType.ALL)
-  @JoinColumn(name = "id")
+  @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Equivalency> industryEquivalency;
 
   private String name;
