@@ -10,10 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.sparq.sparqservice.Entities.Profile;
-import com.sparq.sparqservice.Entities.User;
-import com.sparq.sparqservice.Entities.UtilEntities.ProfileDTO;
-import com.sparq.sparqservice.Entities.UtilEntities.UserDTO;
-import com.sparq.sparqservice.Repositories.UserRepository;
+import com.sparq.sparqservice.Repositories.ProfileRepository;
 
 @Service
 public class ProfileService {
@@ -21,15 +18,11 @@ public class ProfileService {
     @Autowired
     ProfileRepository profileRepo;
 
+    @Autowired
+    UserService userService;
+
     //returns a profile object for a given id
     public Profile getProfileById(UUID userId, Long profileId) {
-        User user = getUserById(userId);
-        List<Profile> userProfiles= user.getProfiles();
-        foreach(Profile prof : userProfiles){
-            if(prof.getId() == profileId);
-            {
-                return prof;
-            }
-        }
+        return profileRepo.findById(profileId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User has no master profile"));
     }
 }

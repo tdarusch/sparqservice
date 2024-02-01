@@ -29,10 +29,11 @@ public class ProfileController {
       return service.getProfileById(userId, profileId);
     }
 
-    @PutMapping(value = "{userId}/profiles/{profileId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Profile updateProfile(@RequestBody Profile profile, @PathVariable UUID userId, @PathVariable Long profileId) {
-        return service.getProfileById(userId, profileId, profile);
-    }
+    //TODO: Add updateProfile(userId, profileId, profile) to profileService;
+    // @PutMapping(value = "{userId}/profiles/{profileId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    // public Profile updateProfile(@RequestBody Profile profile, @PathVariable UUID userId, @PathVariable Long profileId) {
+        // return service.getProfileById(userId, profileId, profile);
+    // }
 
 }
 
