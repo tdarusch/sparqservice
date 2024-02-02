@@ -12,10 +12,11 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
@@ -24,16 +25,22 @@ public class ProfileController {
     @Autowired
     ProfileService service;
 
-    @GetMapping(value = "{userId}/profiles/{profileId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/profiles/{profileId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Profile getProfile(@PathVariable UUID userId , @PathVariable Long profileId) {
       return service.getProfileById(userId, profileId);
     }
 
-    //TODO: Add updateProfile(userId, profileId, profile) to profileService;
-    // @PutMapping(value = "{userId}/profiles/{profileId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    // public Profile updateProfile(@RequestBody Profile profile, @PathVariable UUID userId, @PathVariable Long profileId) {
-        // return service.getProfileById(userId, profileId, profile);
-    // }
+    
+    @PutMapping(value = "/profiles/{profileId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Profile updateUserProfile(@PathVariable Long profileId, @RequestBody Profile profile) {
+        return service.updateProfile(profileId, profile);
+    }
+
+    @DeleteMapping(value = "/profiles/{profileId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public void deleteUserProfile(@PathVariable Long profileId, @RequestBody Profile profile) {
+        service.deleteProfile(profileId, profile);
+        return;
+    }
 
 }
 
