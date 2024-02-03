@@ -6,8 +6,11 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.GenerationType;
 
@@ -30,6 +33,10 @@ public class Education {
   private String degree;
   private String fieldOfStudy;
   private String minor;
+
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "profile_id")
+  private Profile profile;
 
   public Long getId() {
     return id;
@@ -85,6 +92,14 @@ public class Education {
 
   public void setMinor(String minor) {
     this.minor = minor;
+  }
+
+  public Profile getProfile() {
+    return profile;
+  }
+
+  public void setProfile(Profile profile) {
+    this.profile = profile;
   }
 
 }
