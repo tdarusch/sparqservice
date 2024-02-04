@@ -1,14 +1,17 @@
 package com.sparq.sparqservice.Entities;
 
 import java.util.List;
+import java.util.UUID;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
@@ -19,32 +22,37 @@ public class Profile {
   
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(columnDefinition = "serial")
+  @Column(columnDefinition = "serial", name = "p_id")
   private Long id;
 
-  @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-  @JoinColumn(name = "profile_id")
+  @OneToOne(cascade = CascadeType.ALL, mappedBy = "profile")
   private Contact contact;
-  
-  @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+
+  @OneToMany(cascade = CascadeType.ALL, mappedBy = "profile")
   private List<Education> education;
 
-  @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+  @OneToMany(cascade = CascadeType.ALL, mappedBy = "profile")
   private List<Job> workHistory;
 
-  @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+  @OneToOne(cascade = CascadeType.ALL, mappedBy = "profile")
   private About about;
 
-  @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+  @OneToMany(cascade = CascadeType.ALL, mappedBy = "profile")
   private List<Project> projects;
 
-  @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+  @OneToMany(cascade = CascadeType.ALL, mappedBy = "profile")
   private List<Skill> skills;
 
-  @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+  @OneToMany(cascade = CascadeType.ALL, mappedBy = "profile")
   private List<Equivalency> industryEquivalency;
 
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "user_id")
+  private User user;
+
   private String name;
+  private Boolean masterProfile;
+  private Boolean savedProfile;
 
   public Long getId() {
     return id;
@@ -116,6 +124,30 @@ public class Profile {
 
   public void setName(String name) {
     this.name = name;
+  }
+
+  public User getUser() {
+    return user;
+  }
+
+  public void setUser(User user) {
+    this.user = user;
+  }
+
+  public boolean getMasterProfile() {
+    return masterProfile;
+  }
+
+  public void setMasterProfile(Boolean masterProfile) {
+    this.masterProfile = masterProfile;
+  }
+
+  public boolean getSavedProfile() {
+    return savedProfile;
+  }
+
+  public void setSavedProfile(Boolean savedProfile) {
+    this.savedProfile = savedProfile;
   }
 
 }

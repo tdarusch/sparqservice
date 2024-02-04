@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -13,6 +14,7 @@ import com.sparq.sparqservice.Entities.Profile;
 import com.sparq.sparqservice.Entities.User;
 import com.sparq.sparqservice.Entities.UtilEntities.ProfileDTO;
 import com.sparq.sparqservice.Entities.UtilEntities.UserDTO;
+import com.sparq.sparqservice.Repositories.ProfileRepository;
 import com.sparq.sparqservice.Repositories.UserRepository;
 
 @Service
@@ -20,6 +22,9 @@ public class UserService {
   
   @Autowired
   UserRepository userRepo;
+
+  @Autowired
+  ProfileRepository profileRepo;
 
   //returns a list of all users' names and ids
   //used for getting list of all users for admins
@@ -30,7 +35,11 @@ public class UserService {
     for(User user : users) {
       UserDTO dto = new UserDTO();
       dto.setId(user.getId());
-      dto.setName(user.getMasterProfile().getContact().getFirstName() + " " + user.getMasterProfile().getContact().getLastName());
+      List<Profile> masterProfiles = profileRepo.findByUserAndMasterProfile(user, true);
+      if(masterProfiles.size() == 0) {
+        continue;
+      }
+      dto.setName(masterProfiles.get(0).getContact().getFirstName() + " " + masterProfiles.get(0).getContact().getLastName());
       userDTOs.add(dto);
     }
 
@@ -47,10 +56,11 @@ public class UserService {
   //if they do not have a master profile throw a 404
   public Profile getMasterProfileByUserId(UUID userId) {
     User user = getUserById(userId);
-    if(user.getMasterProfile() == null) {
+    List<Profile> masterProfiles = profileRepo.findByUserAndMasterProfile(user, true);
+    if(masterProfiles.size() == 0) {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User has no master profile");
     } else {
-      return user.getMasterProfile();
+      return masterProfiles.get(0);
     }
   }
 
@@ -79,10 +89,11 @@ public class UserService {
   //similar to getAllProfilesInfo but returns the same info for a users saved profile pdfs
   //returns empty list if none saved
   public List<ProfileDTO> getAllSavedProfilesInfo(UUID userId) {
-    User user = getUserById(userId);
     List<ProfileDTO> profileDTOs = new ArrayList<ProfileDTO>();
+    User user = getUserById(userId);
+    List<Profile> savedProfiles = profileRepo.findByUserAndSavedProfile(user, true);
     
-    for(Profile profile : user.getSavedProfiles()) {
+    for(Profile profile : savedProfiles) {
       ProfileDTO dto = new ProfileDTO();
       dto.setId(profile.getId());
       dto.setName(profile.getName());
@@ -96,10 +107,13 @@ public class UserService {
   //if user has no profiles make this profile their master profile
   public Profile addProfile(UUID userId, Profile profile) {
     User user = getUserById(userId);
-    if(user.getMasterProfile() == null) {
-      user.setMasterProfile(profile);
+    if(user.getProfiles().size() == 0) {
+      profile.setMasterProfile(true);
+      user.getProfiles().add(profile);
       userRepo.save(user);
     } else {
+      profile.setMasterProfile(false);
+      profile.setSavedProfile(false);
       user.getProfiles().add(profile);
       userRepo.save(user);
     }
@@ -109,9 +123,16 @@ public class UserService {
   //add a new profile to a user's saved profiles (pdfs)
   public Profile addSavedProfile(UUID userId, Profile profile) {
     User user = getUserById(userId);
-    user.getSavedProfiles().add(profile);
+    profile.setSavedProfile(true);
+    profile.setMasterProfile(false);
+    user.getProfiles().add(profile);
     userRepo.save(user);
     return profile;
+  }
+
+  public User getCurrentUser() {
+    String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+    return getUserById(UUID.nameUUIDFromBytes(currentUsername.getBytes()));
   }
 
 }

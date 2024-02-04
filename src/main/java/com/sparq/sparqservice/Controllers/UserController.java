@@ -3,6 +3,7 @@ package com.sparq.sparqservice.Controllers;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sparq.sparqservice.Entities.Profile;
+import com.sparq.sparqservice.Entities.User;
 import com.sparq.sparqservice.Entities.UtilEntities.ProfileDTO;
 import com.sparq.sparqservice.Entities.UtilEntities.UserDTO;
 import com.sparq.sparqservice.Services.UserService;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @RestController
 public class UserController {
@@ -54,4 +57,9 @@ public class UserController {
     return service.addSavedProfile(userId, profile);
   }
 
+  @GetMapping("/users/current")
+  public User getMethodName() {
+      return service.getCurrentUser();
+  }
+  
 }

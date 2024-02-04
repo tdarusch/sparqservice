@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserService;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -20,32 +21,24 @@ import com.sparq.sparqservice.Entities.User;
 import com.sparq.sparqservice.Repositories.UserRepository;
 
 @Configuration
+@EnableWebSecurity
 public class SecurityConfig {
 
   @Autowired
   UserRepository userRepo;
 
+  @Autowired
+  OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
+
   @Bean
   SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     return http
-      .oauth2Login(oc -> oc.userInfoEndpoint(ui -> ui.userService(oauth2LoginHandler()).oidcUserService(oidcLoginHandler())))
-      .authorizeHttpRequests(c -> c.anyRequest().authenticated())
+      .oauth2Login(oc -> oc.userInfoEndpoint(ui -> ui.userService(oauth2LoginHandler())).successHandler(oAuth2LoginSuccessHandler))
+      .authorizeHttpRequests(c -> {
+        c.requestMatchers("**").permitAll();
+        c.anyRequest().authenticated();
+      })
       .build();
-  }
-
-  private OAuth2UserService<OidcUserRequest, OidcUser> oidcLoginHandler() {
-    return userRequest -> {
-      OidcUserService delegate = new OidcUserService();
-      OidcUser oidcUser = delegate.loadUser(userRequest);
-      User user = new User();
-      user.setEmail(oidcUser.getEmail());
-      user.setUsername(oidcUser.getPreferredUsername());
-      user.setImageUrl(oidcUser.getPicture());
-      user.setPassword(UUID.randomUUID().toString());
-      user.setName(oidcUser.getFullName());
-      user.setId(UUID.nameUUIDFromBytes(oidcUser.getName().getBytes()));
-      return userRepo.findById(user.getId()).orElse(userRepo.save(user));
-    };
   }
 
   private OAuth2UserService<OAuth2UserRequest, OAuth2User> oauth2LoginHandler() {
@@ -58,7 +51,9 @@ public class SecurityConfig {
       user.setImageUrl(oauth2User.getAttribute("avatar_url"));
       user.setPassword(UUID.randomUUID().toString());
       user.setEmail(oauth2User.getAttribute("email"));
-      user.setId(UUID.nameUUIDFromBytes(oauth2User.getName().getBytes()));
+      user.setId(UUID.nameUUIDFromBytes(user.getName().getBytes()));
+      user.setAdmin(true);
+      user.setEnabled(true);
       return userRepo.findById(user.getId()).orElse(userRepo.save(user));
     };
   }

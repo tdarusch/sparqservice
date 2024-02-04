@@ -13,14 +13,12 @@ import org.springframework.security.oauth2.core.oidc.OidcIdToken;
 import org.springframework.security.oauth2.core.oidc.OidcUserInfo;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 
-import jakarta.annotation.Nullable;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -41,14 +39,8 @@ public class User implements UserDetails, OidcUser {
   private String email;
   private String name;
 
-  @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+  @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
   List<Profile> profiles;
-
-  @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-  List<Profile> savedProfiles;
-
-  // @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-  // Profile masterProfile;
 
   @Override
   public String getName() {
@@ -152,21 +144,6 @@ public class User implements UserDetails, OidcUser {
     this.profiles = profiles;
   }
 
-  public List<Profile> getSavedProfiles() {
-    return savedProfiles;
-  }
-
-  public void setSavedProfiles(List<Profile> savedProfiles) {
-    this.savedProfiles = savedProfiles;
-  }
-
-  // public Profile getMasterProfile() {
-  //   return masterProfile;
-  // }
-
-  // public void setMasterProfile(Profile masterProfile) {
-  //   this.masterProfile = masterProfile;
-  // }
 
   public String getEmail() {
     return email;
