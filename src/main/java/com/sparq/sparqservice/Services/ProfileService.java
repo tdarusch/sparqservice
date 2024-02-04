@@ -1,8 +1,5 @@
 package com.sparq.sparqservice.Services;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,9 +16,6 @@ public class ProfileService {
     @Autowired
     ProfileRepository profileRepo;
 
-    @Autowired
-    UserService userService;
-
     //returns a profile object for a given id
     public Profile getProfileById(UUID userId, Long profileId) {
         return profileRepo.findById(profileId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User has no master profile"));
@@ -34,7 +28,6 @@ public class ProfileService {
             new ResponseStatusException(HttpStatus.BAD_REQUEST, "Request ID does not match ID in body.");
         }
         return profileRepo.save(profile);
-
     }
 
     //deletes profile for a given id
