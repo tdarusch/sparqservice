@@ -55,10 +55,5 @@ public class UserController {
   public Profile addSavedProfile(@RequestBody Profile profile, @PathVariable UUID userId) {
     return service.addSavedProfile(userId, profile);
   }
-
-  @GetMapping("/users/current")
-  public User getMethodName() {
-      return service.getCurrentUser();
-  }
   
 }

@@ -1,17 +1,9 @@
 package com.sparq.sparqservice.Entities;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 import java.util.UUID;
-import java.util.Collection;
 
 import org.hibernate.annotations.GenericGenerator;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.oauth2.core.oidc.OidcIdToken;
-import org.springframework.security.oauth2.core.oidc.OidcUserInfo;
-import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -23,7 +15,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "USERS", schema = "sparq")
-public class User implements UserDetails, OidcUser {
+public class User {
   
   @Id
   @GenericGenerator(name = "UUIDGenerator", strategy = "uuid2")
@@ -31,8 +23,6 @@ public class User implements UserDetails, OidcUser {
   @Column(updatable = false, nullable = false)
   private UUID id;
 
-  private String username;
-  private String password;
   private Boolean enabled;
   private Boolean admin;
   private String imageUrl;
@@ -42,59 +32,18 @@ public class User implements UserDetails, OidcUser {
   @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
   List<Profile> profiles;
 
-  @Override
   public String getName() {
-    return Objects.nonNull(name) ? name : username;
+    return name;
   }
 
   public void setName(String name) {
     this.name = name;
   }
 
-  @Override
-  public Map<String, Object> getAttributes() {
-    return null;
-  }
-
-  @Override
-  public Collection<? extends GrantedAuthority> getAuthorities() {
-    return null;
-  }
-
-  @Override 
-  public boolean isAccountNonExpired() {
-    return enabled;
-  }
-
-  @Override
-  public boolean isAccountNonLocked() {
-    return enabled;
-  }
-
-  @Override
-  public boolean isCredentialsNonExpired() {
-    return enabled;
-  }
-
-  @Override
   public boolean isEnabled() {
     return enabled;
   }
 
-  @Override
-  public Map<String, Object> getClaims() {
-    return null;
-  }
-
-  @Override
-  public OidcUserInfo getUserInfo() {
-    return null;
-  }
-
-  @Override
-  public OidcIdToken getIdToken() {
-    return null;
-  }
   
   public UUID getId() {
     return id;
@@ -104,20 +53,8 @@ public class User implements UserDetails, OidcUser {
     this.id = id;
   }
 
-  public String getUsername() {
-    return username;
-  }
-
-  public void setUsername(String username) {
-    this.username = username;
-  }
-
   public String getPassword() {
     return null;
-  }
-
-  public void setPassword(String password) {
-    this.password = password;
   }
 
   public Boolean getEnabled() {
@@ -143,7 +80,6 @@ public class User implements UserDetails, OidcUser {
   public void setProfiles(List<Profile> profiles) {
     this.profiles = profiles;
   }
-
 
   public String getEmail() {
     return email;

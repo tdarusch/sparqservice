@@ -6,7 +6,6 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -128,11 +127,6 @@ public class UserService {
     user.getProfiles().add(profile);
     userRepo.save(user);
     return profile;
-  }
-
-  public User getCurrentUser() {
-    String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
-    return getUserById(UUID.nameUUIDFromBytes(currentUsername.getBytes()));
   }
 
 }
