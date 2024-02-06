@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-
 @RestController
 public class UserController {
   
@@ -54,6 +53,11 @@ public class UserController {
   @PostMapping(value = "/users/{userId}/profiles/saved", produces = MediaType.APPLICATION_JSON_VALUE)
   public Profile addSavedProfile(@RequestBody Profile profile, @PathVariable UUID userId) {
     return service.addSavedProfile(userId, profile);
+  }
+
+  @GetMapping(value = "/users/{userId}/info", produces = MediaType.APPLICATION_JSON_VALUE)
+  public User getMethodName(@PathVariable UUID userId) {
+    return service.getUserById(userId);
   }
   
 }
