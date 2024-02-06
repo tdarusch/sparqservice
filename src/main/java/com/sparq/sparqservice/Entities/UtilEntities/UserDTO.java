@@ -7,6 +7,9 @@ public class UserDTO {
   
   private UUID id;
   private String name;
+  private Boolean admin;
+  private String email;
+  private String imageUrl;
 
   public UUID getId() {
     return id;
@@ -22,6 +25,30 @@ public class UserDTO {
 
   public void setName(String name) {
     this.name = name;
+  }
+
+  public Boolean getAdmin() {
+    return admin;
+  }
+
+  public void setAdmin(Boolean admin) {
+    this.admin = admin;
+  }
+
+  public String getEmail() {
+    return email;
+  }
+
+  public void setEmail(String email) {
+    this.email = email;
+  }
+
+  public String getImageUrl() {
+    return imageUrl;
+  }
+
+  public  void setImageUrl(String imageUrl) {
+    this.imageUrl = imageUrl;
   }
 
 }

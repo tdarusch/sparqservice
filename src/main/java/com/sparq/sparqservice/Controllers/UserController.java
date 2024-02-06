@@ -3,7 +3,6 @@ package com.sparq.sparqservice.Controllers;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sparq.sparqservice.Entities.Profile;
-import com.sparq.sparqservice.Entities.User;
 import com.sparq.sparqservice.Entities.UtilEntities.ProfileDTO;
 import com.sparq.sparqservice.Entities.UtilEntities.UserDTO;
 import com.sparq.sparqservice.Services.UserService;
@@ -56,8 +55,8 @@ public class UserController {
   }
 
   @GetMapping(value = "/users/{userId}/info", produces = MediaType.APPLICATION_JSON_VALUE)
-  public User getMethodName(@PathVariable UUID userId) {
-    return service.getUserById(userId);
+  public UserDTO getMethodName(@PathVariable UUID userId) {
+    return service.getUserInfoDto(userId);
   }
   
 }

@@ -44,6 +44,7 @@ public class OAuth2LoginSuccessHandler extends SavedRequestAwareAuthenticationSu
         User user = new User();
         user.setEmail(email);
         user.setName(name);
+        user.setAdmin(true);
         userRepo.save(user);
         DefaultOAuth2User newUser = new DefaultOAuth2User(new ArrayList<SimpleGrantedAuthority>(), attributes, "email");
         Authentication securityAuth = new OAuth2AuthenticationToken(newUser, new ArrayList<SimpleGrantedAuthority>(),

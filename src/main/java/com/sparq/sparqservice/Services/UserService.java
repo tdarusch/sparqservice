@@ -38,7 +38,10 @@ public class UserService {
       if(masterProfiles.size() == 0) {
         continue;
       }
-      dto.setName(masterProfiles.get(0).getContact().getFirstName() + " " + masterProfiles.get(0).getContact().getLastName());
+      dto.setName(user.getName());
+      dto.setAdmin(user.getAdmin());
+      dto.setEmail(user.getEmail());
+      dto.setImageUrl(user.getImageUrl());
       userDTOs.add(dto);
     }
 
@@ -127,6 +130,17 @@ public class UserService {
     user.getProfiles().add(profile);
     userRepo.save(user);
     return profile;
+  }
+
+  public UserDTO getUserInfoDto(UUID userId) {
+    User user = getUserById(userId);
+    UserDTO userDto = new UserDTO();
+    userDto.setId(userId);
+    userDto.setAdmin(user.getAdmin());
+    userDto.setName(user.getName());
+    userDto.setEmail(user.getEmail());
+    userDto.setImageUrl(user.getImageUrl());
+    return userDto;
   }
 
 }
