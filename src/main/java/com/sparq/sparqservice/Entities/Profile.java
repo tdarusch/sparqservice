@@ -2,6 +2,8 @@ package com.sparq.sparqservice.Entities;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -45,13 +47,14 @@ public class Profile {
   @OneToMany(cascade = CascadeType.ALL, mappedBy = "profile")
   private List<Equivalency> industryEquivalency;
 
+  @JsonIgnore
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "user_id")
   private User user;
 
   private String name;
-  private Boolean masterProfile;
-  private Boolean savedProfile;
+  private boolean masterProfile;
+  private boolean savedProfile;
 
   public Long getId() {
     return id;

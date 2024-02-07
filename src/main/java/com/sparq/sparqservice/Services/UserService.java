@@ -71,14 +71,9 @@ public class UserService {
   public List<ProfileDTO> getAllProfilesInfo(UUID userId) {
     User user = getUserById(userId);
     List<ProfileDTO> profileDTOs = new ArrayList<ProfileDTO>();
+    List<Profile> profiles = user.getProfiles();
 
-    Profile masterProfile = getMasterProfileByUserId(userId);
-    ProfileDTO masterDto = new ProfileDTO();
-    masterDto.setId(masterProfile.getId());
-    masterDto.setName("Master");
-    profileDTOs.add(masterDto);
-
-    for(Profile profile : user.getProfiles()) {
+    for(Profile profile : profiles) {
       ProfileDTO dto = new ProfileDTO();
       dto.setId(profile.getId());
       dto.setName(profile.getName());
@@ -109,16 +104,11 @@ public class UserService {
   //if user has no profiles make this profile their master profile
   public Profile addProfile(UUID userId, Profile profile) {
     User user = getUserById(userId);
-    if(user.getProfiles().size() == 0) {
+    if(profileRepo.findByUserAndMasterProfile(user, true).size() == 0) {
       profile.setMasterProfile(true);
-      user.getProfiles().add(profile);
-      userRepo.save(user);
-    } else {
-      profile.setMasterProfile(false);
-      profile.setSavedProfile(false);
-      user.getProfiles().add(profile);
-      userRepo.save(user);
     }
+    profile.setUser(user);
+    profileRepo.save(profile);
     return profile;
   }
 
@@ -127,6 +117,7 @@ public class UserService {
     User user = getUserById(userId);
     profile.setSavedProfile(true);
     profile.setMasterProfile(false);
+    profile.setUser(user);
     user.getProfiles().add(profile);
     userRepo.save(user);
     return profile;
