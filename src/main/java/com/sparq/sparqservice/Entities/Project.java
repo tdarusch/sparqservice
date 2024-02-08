@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sparq.sparqservice.Entities.UtilEntities.TechnologyListEntry;
 
 import jakarta.persistence.CascadeType;
@@ -44,6 +45,7 @@ public class Project {
 
   private String type;
 
+  @JsonIgnore
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "profile_id")
   private Profile profile;

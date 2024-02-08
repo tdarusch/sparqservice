@@ -1,5 +1,6 @@
 package com.sparq.sparqservice.Entities.UtilEntities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sparq.sparqservice.Entities.About;
 
 import jakarta.persistence.Column;
@@ -24,6 +25,7 @@ public class BulletListEntry {
   @Column(columnDefinition = "text")
   private String text;
 
+  @JsonIgnore
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "about_id")
   private About about;

@@ -2,6 +2,7 @@ package com.sparq.sparqservice.Entities;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sparq.sparqservice.Entities.UtilEntities.BulletListEntry;
 
 import jakarta.persistence.CascadeType;
@@ -31,6 +32,7 @@ public class About {
   @Column(columnDefinition = "text")
   private String description;
 
+  @JsonIgnore
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "profile_id")
   private Profile profile;

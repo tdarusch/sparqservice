@@ -1,5 +1,6 @@
 package com.sparq.sparqservice.Entities.UtilEntities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sparq.sparqservice.Entities.Job;
 import com.sparq.sparqservice.Entities.Project;
 
@@ -22,10 +23,12 @@ public class TechnologyListEntry {
   @Column(columnDefinition = "serial")
   private Long id;
 
+  @JsonIgnore
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "job_id")
   private Job job;
 
+  @JsonIgnore
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "project_id")
   private Project project;
