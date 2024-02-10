@@ -6,7 +6,7 @@ import java.util.List;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.sparq.sparqservice.Entities.UtilEntities.TechnologyListEntry;
+import com.sparq.sparqservice.Entities.UtilEntities.JobTechnologyListEntry;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -31,7 +31,7 @@ public class Job {
 
   @OneToMany(cascade = CascadeType.ALL)
   @JoinColumn(name = "job_id")
-  private List<TechnologyListEntry> technologies;
+  private List<JobTechnologyListEntry> technologies;
 
   @DateTimeFormat(pattern = "MM/yyyy")
   private Date startDate;
@@ -60,11 +60,11 @@ public class Job {
     this.id = id;
   }
 
-  public List<TechnologyListEntry> getTechnologies() {
+  public List<JobTechnologyListEntry> getTechnologies() {
     return technologies;
   }
 
-  public void setTechnologies(List<TechnologyListEntry> technologies) {
+  public void setTechnologies(List<JobTechnologyListEntry> technologies) {
     this.technologies = technologies;
   }
 

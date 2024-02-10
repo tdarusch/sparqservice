@@ -22,6 +22,7 @@ public class Contact {
   private Long id;
 
   private String firstName;
+  private String middleName;
   private String lastName;
 
   @Column(columnDefinition = "text")
@@ -89,6 +90,14 @@ public class Contact {
 
   public void setProfile(Profile profile) {
     this.profile = profile;
+  }
+
+  public String getMiddleName() {
+    return middleName;
+  }
+
+  public void setMiddleName(String middleName) {
+    this.middleName = middleName;
   }
 
 }

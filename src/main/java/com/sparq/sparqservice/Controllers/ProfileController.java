@@ -5,8 +5,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.sparq.sparqservice.Entities.Profile;
 import com.sparq.sparqservice.Services.ProfileService;
 
-import java.util.UUID;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -22,8 +20,8 @@ public class ProfileController {
     ProfileService service;
 
     @GetMapping(value = "/profiles/{profileId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Profile getProfile(@PathVariable UUID userId , @PathVariable Long profileId) {
-      return service.getProfileById(userId, profileId);
+    public Profile getProfile(@PathVariable Long profileId) {
+      return service.getProfileById(profileId);
     }
 
     

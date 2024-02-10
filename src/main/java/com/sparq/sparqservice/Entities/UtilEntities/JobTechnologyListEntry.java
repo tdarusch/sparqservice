@@ -2,7 +2,6 @@ package com.sparq.sparqservice.Entities.UtilEntities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sparq.sparqservice.Entities.Job;
-import com.sparq.sparqservice.Entities.Project;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -15,8 +14,8 @@ import jakarta.persistence.Table;
 import jakarta.persistence.GenerationType;
 
 @Entity
-@Table(name = "TECHNOLOGYLIST", schema = "sparq")
-public class TechnologyListEntry {
+@Table(name = "TECHNOLOGYLIST_JOBS", schema = "sparq")
+public class JobTechnologyListEntry {
   
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,11 +26,6 @@ public class TechnologyListEntry {
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "job_id")
   private Job job;
-
-  @JsonIgnore
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "project_id")
-  private Project project;
 
   private String text;
 
@@ -57,14 +51,6 @@ public class TechnologyListEntry {
 
   public void setJob(Job job) {
     this.job = job;
-  }
-
-  public Project getProject() {
-    return project;
-  }
-
-  public void setProject(Project project) {
-    this.project = project;
   }
 
 }
