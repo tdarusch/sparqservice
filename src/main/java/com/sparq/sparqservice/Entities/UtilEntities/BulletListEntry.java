@@ -46,7 +46,7 @@ public class BulletListEntry {
     this.text = text;
   }
 
-  public About geAbout() {
+  public About getAbout() {
     return about;
   }
 

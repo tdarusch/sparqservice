@@ -34,16 +34,16 @@ public class ProfileService {
         }
 
         //add entity relations to new entries
-        if(profile.getContact() != null && profile.getContact().getId() == null) {
+        if(profile.getContact() != null && (profile.getContact().getId() == null || profile.getContact().getProfile() == null)) {
             profile.getContact().setProfile(profile);
         }
         if(profile.getAbout() != null) {
-            if(profile.getAbout().getId() == null) {
+            if(profile.getAbout().getId() == null || profile.getAbout().getProfile() == null) {
                 profile.getAbout().setProfile(profile);
             }
             if(profile.getAbout().getBulletList() != null) {
                 for(BulletListEntry entry : profile.getAbout().getBulletList()) {
-                    if(entry.getId() == null) {
+                    if(entry.getId() == null || entry.getAbout() == null) {
                         entry.setAbout(profile.getAbout());
                     }
                 }
@@ -51,19 +51,19 @@ public class ProfileService {
         }
         if(profile.getEducation() != null) {
             for(Education education : profile.getEducation()) {
-                if(education.getId() == null) {
+                if(education.getId() == null || education.getProfile() == null) {
                     education.setProfile(profile);
                 }
             }
         }
         if(profile.getWorkHistory() != null) {
             for(Job job : profile.getWorkHistory()) {
-                if(job.getId() == null) {
+                if(job.getId() == null || job.getProfile() == null) {
                     job.setProfile(profile);
                 }
                 if(job.getTechnologies() != null) {
                     for(JobTechnologyListEntry tech : job.getTechnologies()) {
-                        if(tech.getId() == null) {
+                        if(tech.getId() == null || tech.getJob() == null) {
                             tech.setJob(job);
                         }
                     }
@@ -72,12 +72,12 @@ public class ProfileService {
         }
         if(profile.getProjects() != null) {
             for(Project project : profile.getProjects()) {
-                if(project.getId() == null) {
+                if(project.getId() == null || project.getProfile() == null) {
                     project.setProfile(profile);
                 }
                 if(project.getTechnologies() != null) {
                     for(ProjectTechnologyListEntry tech : project.getTechnologies()) {
-                        if(tech.getId() == null) {
+                        if(tech.getId() == null || tech.getProject() == null) {
                             tech.setProject(project);
                         }
                     }
@@ -86,14 +86,14 @@ public class ProfileService {
         }
         if(profile.getSkills() != null) {
             for(Skill skill : profile.getSkills()) {
-                if(skill.getId() == null) {
+                if(skill.getId() == null || skill.getProfile() == null) {
                     skill.setProfile(profile);
                 }
             }
         }
         if(profile.getIndustryEquivalency() != null) {
             for(Equivalency eq : profile.getIndustryEquivalency()) {
-                if(eq.getId() == null) {
+                if(eq.getId() == null || eq.getProfile() == null) {
                     eq.setProfile(profile);
                 }
             }
