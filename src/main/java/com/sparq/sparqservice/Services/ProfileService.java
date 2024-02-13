@@ -1,5 +1,7 @@
 package com.sparq.sparqservice.Services;
 
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -98,7 +100,11 @@ public class ProfileService {
                 }
             }
         }
-
+        
+        if(profile.getCreatedDate() == null) {
+            profile.setCreatedDate(new Date());
+        }
+        
         return profileRepo.save(profile);
     }
 
