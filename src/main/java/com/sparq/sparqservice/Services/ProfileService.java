@@ -1,6 +1,6 @@
 package com.sparq.sparqservice.Services;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -102,9 +102,9 @@ public class ProfileService {
         }
         
         if(profile.getCreatedDate() == null) {
-            profile.setCreatedDate(new Date());
+            profile.setCreatedDate(LocalDate.now());
         }
-        
+
         return profileRepo.save(profile);
     }
 

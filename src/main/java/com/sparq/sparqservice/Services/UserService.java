@@ -1,7 +1,7 @@
 package com.sparq.sparqservice.Services;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -116,7 +116,7 @@ public class UserService {
     if(profileRepo.findByUserAndMasterProfile(user, true).size() == 0) {
       profile.setMasterProfile(true);
     }
-    profile.setCreatedDate(new Date());
+    profile.setCreatedDate(LocalDate.now());
     profile.setUser(user);
 
     //add entity relations to new entries

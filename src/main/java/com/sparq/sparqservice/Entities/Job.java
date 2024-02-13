@@ -1,6 +1,6 @@
 package com.sparq.sparqservice.Entities;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -33,11 +33,11 @@ public class Job {
   @JoinColumn(name = "job_id")
   private List<JobTechnologyListEntry> technologies;
 
-  @DateTimeFormat(pattern = "MM/yyyy")
-  private Date startDate;
+  @DateTimeFormat(pattern = "MM/dd/yyyy")
+  private LocalDate startDate;
   
-  @DateTimeFormat(pattern = "MM/yyyy")
-  private Date endDate;
+  @DateTimeFormat(pattern = "MM/dd/yyyy")
+  private LocalDate endDate;
 
   private String company;
   private String role;
@@ -68,19 +68,19 @@ public class Job {
     this.technologies = technologies;
   }
 
-  public Date getStartDate() {
+  public LocalDate getStartDate() {
     return startDate;
   }
 
-  public void setStartDate(Date startDate) {
+  public void setStartDate(LocalDate startDate) {
     this.startDate = startDate;
   }
 
-  public Date getEndDate() {
+  public LocalDate getEndDate() {
     return endDate;
   }
 
-  public void setEndDate(Date endDate) {
+  public void setEndDate(LocalDate endDate) {
     this.endDate = endDate;
   }
 

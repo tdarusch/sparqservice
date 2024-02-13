@@ -1,6 +1,6 @@
 package com.sparq.sparqservice.Entities;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -59,8 +59,8 @@ public class Profile {
   private boolean masterProfile;
   private boolean savedProfile;
 
-  @DateTimeFormat(pattern = "MM/yyyy")
-  private Date createdDate;
+  @DateTimeFormat(pattern = "MM/dd/yyyy")
+  private LocalDate createdDate;
 
   public Long getId() {
     return id;
@@ -158,11 +158,11 @@ public class Profile {
     this.savedProfile = savedProfile;
   }
 
-  public Date getCreatedDate() {
+  public LocalDate getCreatedDate() {
     return createdDate;
   }
 
-  public void setCreatedDate(Date createdDate) {
+  public void setCreatedDate(LocalDate createdDate) {
     this.createdDate = createdDate;
   }
 
