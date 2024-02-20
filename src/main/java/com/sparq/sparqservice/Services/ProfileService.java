@@ -1,12 +1,15 @@
 package com.sparq.sparqservice.Services;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.sparq.sparqservice.Entities.About;
 import com.sparq.sparqservice.Entities.Education;
 import com.sparq.sparqservice.Entities.Equivalency;
 import com.sparq.sparqservice.Entities.Job;
@@ -31,6 +34,7 @@ public class ProfileService {
 
     //updates profile and returns updated profile object
     public Profile updateProfile(Long profileId, Profile profile) {
+        Profile currentProfile = profileRepo.findById(profileId).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Profile with ID " + profileId + " does not exist"));
         if(profileId != profile.getId()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Request ID does not match ID in body.");
         }
@@ -105,6 +109,16 @@ public class ProfileService {
             profile.setCreatedDate(LocalDate.now());
         }
 
+        profile.setUser(currentProfile.getUser());
+
+        if(profile.getMasterProfile() == true) {
+            List<Profile> masterProfs = profileRepo.findByUserAndMasterProfile(currentProfile.getUser(), true);
+            for(Profile p : masterProfs) {
+                p.setMasterProfile(false);
+                p.setName(p.getName() + " (Old Master Profile)");
+                profileRepo.save(p);
+            }
+        }
         return profileRepo.save(profile);
     }
 
@@ -115,6 +129,65 @@ public class ProfileService {
         }
         profileRepo.delete(profile);
         return;
+    }
 
+    public Profile cloneProfile(Long profileId) {
+        Profile profile = profileRepo.findById(profileId).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Profile with ID " + profileId + " does not exist"));
+        Profile clonedProfile = new Profile();
+        if(profile.getAbout() != null) {
+            About clonedAbout = new About();
+            clonedAbout.setDescription(profile.getAbout().getDescription());
+            List<BulletListEntry> clonedBulletList = new ArrayList<BulletListEntry>();
+            if(profile.getAbout().getBulletList() != null) {
+                profile.getAbout().getBulletList().stream().forEach(listItem -> { 
+                    BulletListEntry entry = new BulletListEntry(); 
+                    entry.setText(listItem.getText());
+                    entry.setAbout(clonedAbout); 
+                    clonedBulletList.add(entry);
+                });
+            }
+            clonedAbout.setBulletList(clonedBulletList);
+            clonedAbout.setProfile(clonedProfile);
+            clonedProfile.setAbout(clonedAbout);
+        }
+        if(profile.getEducation() != null) {
+            List<Education> clonedEducation = new ArrayList<Education>();
+            profile.getEducation().stream().forEach(ed -> {
+                Education clonedEd = new Education();
+                clonedEd.setDegree(ed.getDegree());
+                clonedEd.setEndDate(ed.getEndDate());
+                clonedEd.setFieldOfStudy(ed.getFieldOfStudy());
+                clonedEd.setMinor(ed.getMinor());
+                clonedEd.setSchool(ed.getSchool());
+                clonedEd.setStartDate(ed.getStartDate());
+                clonedEd.setProfile(clonedProfile);
+                clonedEducation.add(clonedEd);
+            });
+            profile.setEducation(clonedEducation);
+        }
+        if(profile.getProjects() != null) {
+            List<Project> clonedProjects = new ArrayList<Project>();
+            profile.getProjects().stream().forEach(proj -> {
+                Project clonedProject = new Project();
+                clonedProject.setDescription(proj.getDescription());
+                clonedProject.setEndDate(proj.getEndDate());
+                clonedProject.setName(proj.getName());
+                clonedProject.setProfile(clonedProfile);
+                clonedProject.setStartDate(proj.getStartDate());
+                clonedProject.setType(proj.getType());
+                if(proj.getTechnologies() != null) {
+                    List<ProjectTechnologyListEntry> clonedTechs = new ArrayList<ProjectTechnologyListEntry>();
+                    proj.getTechnologies().stream().forEach(tech -> {
+                        ProjectTechnologyListEntry clonedTech = new ProjectTechnologyListEntry();
+                        clonedTech.setProject(clonedProject);
+                        clonedTech.setText(tech.getText());
+                        clonedTechs.add(clonedTech);
+                    });
+                }
+                clonedProjects.add(clonedProject);
+            });
+        }
+        //add jobs, skills
+        return clonedProfile;
     }
 }

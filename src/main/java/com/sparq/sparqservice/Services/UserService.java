@@ -80,12 +80,13 @@ public class UserService {
   public List<ProfileDTO> getAllProfilesInfo(UUID userId) {
     User user = getUserById(userId);
     List<ProfileDTO> profileDTOs = new ArrayList<ProfileDTO>();
-    List<Profile> profiles = user.getProfiles();
+    List<Profile> profiles = profileRepo.findByUserAndMasterProfile(user, false);
 
     for(Profile profile : profiles) {
       ProfileDTO dto = new ProfileDTO();
       dto.setId(profile.getId());
       dto.setName(profile.getName());
+      dto.setCreatedDate(profile.getCreatedDate());
       profileDTOs.add(dto);
     }
 
