@@ -44,6 +44,7 @@ public class Project {
   private String description;
 
   private String type;
+  private String link;
 
   @JsonIgnore
   @ManyToOne(fetch = FetchType.LAZY)
@@ -112,6 +113,14 @@ public class Project {
 
   public void setProfile(Profile profile) {
     this.profile = profile;
+  }
+
+  public String getLink() {
+    return link;
+  }
+
+  public void setLink(String link) {
+    this.link = link;
   }
 
 }
