@@ -35,7 +35,7 @@ public class ProfileService {
             List<Profile> masterProfs = profileRepo.findByUserAndMasterProfile(currentProfile.getUser(), true);
             for(Profile p : masterProfs) {
                 p.setMasterProfile(false);
-                p.setName(p.getName() + " (Old Master Profile " + (oldMasterProfs.size() == 0 ? "" : Integer.toString(oldMasterProfs.size() + 1)) + ")");
+                p.setName("Old Master Profile" + (oldMasterProfs.size() == 0 ? "" : " " + Integer.toString(oldMasterProfs.size() + 1)));
                 profileRepo.save(p);
             }
         }
