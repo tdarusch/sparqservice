@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sparq.sparqservice.Entities.UtilEntities.ProjectTechnologyListEntry;
 
 import jakarta.persistence.CascadeType;
@@ -15,7 +14,6 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.GenerationType;
@@ -29,7 +27,8 @@ public class Project {
   @Column(columnDefinition = "serial")
   private Long id;
 
-  @OneToMany(cascade = CascadeType.ALL, mappedBy = "project")
+  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+  @JoinColumn(name = "tech_id", nullable = false)
   private List<ProjectTechnologyListEntry> technologies;
 
   @DateTimeFormat(pattern = "MM/dd/yyyy")
@@ -45,11 +44,6 @@ public class Project {
 
   private String type;
   private String link;
-
-  @JsonIgnore
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "profile_id")
-  private Profile profile;
 
   public Long getId() {
     return id;
@@ -105,14 +99,6 @@ public class Project {
 
   public void setType(String type) {
     this.type = type;
-  }
-
-  public Profile getProfile() {
-    return profile;
-  }
-
-  public void setProfile(Profile profile) {
-    this.profile = profile;
   }
 
   public String getLink() {

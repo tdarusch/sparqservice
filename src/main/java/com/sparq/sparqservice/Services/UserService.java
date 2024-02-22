@@ -10,17 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.sparq.sparqservice.Entities.Education;
-import com.sparq.sparqservice.Entities.Equivalency;
-import com.sparq.sparqservice.Entities.Job;
 import com.sparq.sparqservice.Entities.Profile;
-import com.sparq.sparqservice.Entities.Project;
-import com.sparq.sparqservice.Entities.Skill;
 import com.sparq.sparqservice.Entities.User;
-import com.sparq.sparqservice.Entities.UtilEntities.BulletListEntry;
 import com.sparq.sparqservice.Entities.UtilEntities.ProfileDTO;
-import com.sparq.sparqservice.Entities.UtilEntities.ProjectTechnologyListEntry;
-import com.sparq.sparqservice.Entities.UtilEntities.JobTechnologyListEntry;
 import com.sparq.sparqservice.Entities.UtilEntities.UserDTO;
 import com.sparq.sparqservice.Repositories.ProfileRepository;
 import com.sparq.sparqservice.Repositories.UserRepository;
@@ -120,71 +112,71 @@ public class UserService {
     profile.setCreatedDate(LocalDate.now());
     profile.setUser(user);
 
-    //add entity relations to new entries
-    if(profile.getContact() != null && profile.getContact().getId() == null) {
-        profile.getContact().setProfile(profile);
-    }
-    if(profile.getAbout() != null) {
-        if(profile.getAbout().getId() == null) {
-            profile.getAbout().setProfile(profile);
-        }
-        if(profile.getAbout().getBulletList() != null) {
-            for(BulletListEntry entry : profile.getAbout().getBulletList()) {
-                if(entry.getId() == null) {
-                    entry.setAbout(profile.getAbout());
-                }
-            }
-        }
-    }
-    if(profile.getEducation() != null) {
-        for(Education education : profile.getEducation()) {
-            if(education.getId() == null) {
-                education.setProfile(profile);
-            }
-        }
-    }
-    if(profile.getWorkHistory() != null) {
-        for(Job job : profile.getWorkHistory()) {
-            if(job.getId() == null) {
-                job.setProfile(profile);
-            }
-            if(job.getTechnologies() != null) {
-                for(JobTechnologyListEntry tech : job.getTechnologies()) {
-                    if(tech.getId() == null) {
-                        tech.setJob(job);
-                    }
-                }
-            }
-        }
-    }
-    if(profile.getProjects() != null) {
-        for(Project project : profile.getProjects()) {
-            if(project.getId() == null) {
-                project.setProfile(profile);
-            }
-            if(project.getTechnologies() != null) {
-                for(ProjectTechnologyListEntry tech : project.getTechnologies()) {
-                    if(tech.getId() == null) {
-                        tech.setProject(project);
-                    }
-                }
-            }
-        }
-    }
-    if(profile.getSkills() != null) {
-        for(Skill skill : profile.getSkills()) {
-            if(skill.getId() == null) {
-                skill.setProfile(profile);
-            }
-        }
-    }
-    if(profile.getIndustryEquivalency() != null) {
-        for(Equivalency eq : profile.getIndustryEquivalency()) {
-            if(eq.getId() == null) {
-                eq.setProfile(profile);
-            }
-        }
-    }
+    // //add entity relations to new entries
+    // if(profile.getContact() != null && profile.getContact().getId() == null) {
+    //     profile.getContact().setProfile(profile);
+    // }
+    // if(profile.getAbout() != null) {
+    //     if(profile.getAbout().getId() == null) {
+    //         profile.getAbout().setProfile(profile);
+    //     }
+    //     if(profile.getAbout().getBulletList() != null) {
+    //         for(BulletListEntry entry : profile.getAbout().getBulletList()) {
+    //             if(entry.getId() == null) {
+    //                 entry.setAbout(profile.getAbout());
+    //             }
+    //         }
+    //     }
+    // }
+    // if(profile.getEducation() != null) {
+    //     for(Education education : profile.getEducation()) {
+    //         if(education.getId() == null) {
+    //             education.setProfile(profile);
+    //         }
+    //     }
+    // }
+    // if(profile.getWorkHistory() != null) {
+    //     for(Job job : profile.getWorkHistory()) {
+    //         if(job.getId() == null) {
+    //             job.setProfile(profile);
+    //         }
+    //         if(job.getTechnologies() != null) {
+    //             for(JobTechnologyListEntry tech : job.getTechnologies()) {
+    //                 if(tech.getId() == null) {
+    //                     tech.setJob(job);
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }
+    // if(profile.getProjects() != null) {
+    //     for(Project project : profile.getProjects()) {
+    //         if(project.getId() == null) {
+    //             project.setProfile(profile);
+    //         }
+    //         if(project.getTechnologies() != null) {
+    //             for(ProjectTechnologyListEntry tech : project.getTechnologies()) {
+    //                 if(tech.getId() == null) {
+    //                     tech.setProject(project);
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }
+    // if(profile.getSkills() != null) {
+    //     for(Skill skill : profile.getSkills()) {
+    //         if(skill.getId() == null) {
+    //             skill.setProfile(profile);
+    //         }
+    //     }
+    // }
+    // if(profile.getIndustryEquivalency() != null) {
+    //     for(Equivalency eq : profile.getIndustryEquivalency()) {
+    //         if(eq.getId() == null) {
+    //             eq.setProfile(profile);
+    //         }
+    //     }
+    // }
 
     profileRepo.save(profile);
     return profile;

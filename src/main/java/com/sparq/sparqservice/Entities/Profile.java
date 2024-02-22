@@ -29,29 +29,32 @@ public class Profile {
   @Column(columnDefinition = "serial", name = "p_id")
   private Long id;
 
-  @OneToOne(cascade = CascadeType.ALL, mappedBy = "profile")
+  @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+  @JoinColumn(name = "contact_id", nullable = false)
   private Contact contact;
 
-  @OneToMany(cascade = CascadeType.ALL, mappedBy = "profile")
+  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+  @JoinColumn(name = "education_id", nullable = false)
   private List<Education> education;
 
-  @OneToMany(cascade = CascadeType.ALL, mappedBy = "profile")
+  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+  @JoinColumn(name = "job_id", nullable = false)
   private List<Job> workHistory;
 
-  @OneToOne(cascade = CascadeType.ALL, mappedBy = "profile")
+  @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+  @JoinColumn(name = "about_id", nullable = false)
   private About about;
 
-  @OneToMany(cascade = CascadeType.ALL, mappedBy = "profile")
+  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+  @JoinColumn(name = "project_id", nullable = false)
   private List<Project> projects;
 
-  @OneToMany(cascade = CascadeType.ALL, mappedBy = "profile")
+  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+  @JoinColumn(name = "skill_id", nullable = false)
   private List<Skill> skills;
 
-  @OneToMany(cascade = CascadeType.ALL, mappedBy = "profile")
-  private List<Equivalency> industryEquivalency;
-
   @JsonIgnore
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "user_id")
   private User user;
 
@@ -116,14 +119,6 @@ public class Profile {
 
   public void setSkills(List<Skill> skills) {
     this.skills = skills;
-  }
-
-  public List<Equivalency> getIndustryEquivalency() {
-    return industryEquivalency;
-  }
-
-  public void setIndustryEquivalency(List<Equivalency> industryEquivalency) {
-    this.industryEquivalency = industryEquivalency;
   }
 
   public String getName() {

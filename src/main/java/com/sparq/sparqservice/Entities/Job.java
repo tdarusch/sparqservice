@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sparq.sparqservice.Entities.UtilEntities.JobTechnologyListEntry;
 
 import jakarta.persistence.CascadeType;
@@ -15,7 +14,6 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.GenerationType;
@@ -29,8 +27,8 @@ public class Job {
   @Column(columnDefinition = "serial")
   private Long id;
 
-  @OneToMany(cascade = CascadeType.ALL)
-  @JoinColumn(name = "job_id")
+  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+  @JoinColumn(name = "job_id", nullable = false)
   private List<JobTechnologyListEntry> technologies;
 
   @DateTimeFormat(pattern = "MM/dd/yyyy")
@@ -46,11 +44,6 @@ public class Job {
   private String responsibilities;
 
   private Boolean current;
-
-  @JsonIgnore
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "profile_id")
-  private Profile profile;
 
   public Long getId() {
     return id;
@@ -114,14 +107,6 @@ public class Job {
 
   public void setCurrent(Boolean current) {
     this.current = current;
-  }
-
-  public Profile getProfile() {
-    return profile;
-  }
-
-  public void setProfile(Profile profile) {
-    this.profile = profile;
   }
 
 }

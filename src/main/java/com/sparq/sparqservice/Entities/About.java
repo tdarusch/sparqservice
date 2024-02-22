@@ -2,7 +2,6 @@ package com.sparq.sparqservice.Entities;
 
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sparq.sparqservice.Entities.UtilEntities.BulletListEntry;
 
 import jakarta.persistence.CascadeType;
@@ -12,7 +11,6 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.GenerationType;
@@ -26,16 +24,12 @@ public class About {
   @Column(columnDefinition = "serial")
   private Long id;
 
-  @OneToMany(cascade = CascadeType.ALL, mappedBy = "about")
+  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+  @JoinColumn(name = "list_item_id", nullable = false)
   private List<BulletListEntry> bulletList;
 
   @Column(columnDefinition = "text")
   private String description;
-
-  @JsonIgnore
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "profile_id")
-  private Profile profile;
 
   public Long getId() {
     return id;
@@ -59,14 +53,6 @@ public class About {
 
   public void setDescription(String description) {
     this.description = description;
-  }
-
-  public Profile getProfile() {
-    return profile;
-  }
-
-  public void setProfile(Profile profile) {
-    this.profile = profile;
   }
 
 }
