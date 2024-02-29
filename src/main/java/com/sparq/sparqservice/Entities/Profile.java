@@ -7,6 +7,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -29,8 +30,9 @@ public class Profile {
   @Column(columnDefinition = "serial", name = "p_id")
   private Long id;
 
+  @Nullable
   @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
-  @JoinColumn(name = "contact_id", nullable = false)
+  @JoinColumn(name = "contact_id")
   private Contact contact;
 
   @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
@@ -41,8 +43,9 @@ public class Profile {
   @JoinColumn(name = "job_id", nullable = false)
   private List<Job> workHistory;
 
+  @Nullable
   @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
-  @JoinColumn(name = "about_id", nullable = false)
+  @JoinColumn(name = "about_id")
   private About about;
 
   @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)

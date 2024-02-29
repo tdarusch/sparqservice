@@ -25,7 +25,7 @@ public class About {
   private Long id;
 
   @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
-  @JoinColumn(name = "list_item_id", nullable = false)
+  @JoinColumn(name = "list_item_id")
   private List<BulletListEntry> bulletList;
 
   @Column(columnDefinition = "text")
