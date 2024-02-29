@@ -1,7 +1,6 @@
 package com.sparq.sparqservice.Services;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
