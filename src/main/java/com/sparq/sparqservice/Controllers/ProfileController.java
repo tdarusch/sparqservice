@@ -7,11 +7,15 @@ import com.sparq.sparqservice.Services.ProfileService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
 
 @RestController
 public class ProfileController {
@@ -33,8 +37,13 @@ public class ProfileController {
     @DeleteMapping(value = "/profiles/{profileId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public void deleteUserProfile(@PathVariable Long profileId, @RequestBody Profile profile) {
         service.deleteProfile(profileId, profile);
-        return;
     }
+
+    @GetMapping(value = "/profiles/{profileId}/pdf", produces = MediaType.APPLICATION_PDF_VALUE)
+    public ResponseEntity<byte[]> getProfilePdf(@PathVariable Long profileId) {
+        return service.generateProfilePdf(profileId);
+    }
+    
 
 }
 
