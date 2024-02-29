@@ -19,7 +19,7 @@
 			</div>
 		</div>
 		<div style="margin: 15px 0px; padding: 0px 5px; text-align: left">
-			<p style="font-size: 14pt; font-weight: bold; text-align: left; margin: 4">RELEVANT SKILLS</p>
+			<p style="font-size: 14pt; font-weight: bold; text-align: left; margin: 1">RELEVANT SKILLS</p>
 			<hr style="border: dashed 2px #e8e8e8;" />
 			<div style="margin: 5px 0px">
 				<div style="display: flex; justify-content: left; flex-wrap: wrap">
@@ -30,35 +30,41 @@
 			</div>
 		</div>
 		<div style="margin: 15px 0px; padding: 0px 5px; text-align: left">
-			<p style="font-size: 14pt; font-weight: bold; text-align: left; margin: 4">EDUCATION</p>
+			<p style="font-size: 14pt; font-weight: bold; text-align: left; margin: 1">EDUCATION</p>
 			<hr style="border: dashed 2px #e8e8e8;" />
 			<div style="margin: 5px 0px" th:each="school : ${education}">
-				<div style="display: flex;">
-					<div style="width: 50%; text-align: left;">
-						<p style="font-size: 12pt; margin: 4" th:text="${school.school}"></p>
-						<p style="font-size: 12pt; margin: 4; font-style: italic">Degree: <span th:text="${school.degree}"></span></p>
-						<p style="font-size: 12pt; margin: 4; font-style: italic">Major: <span th:text="${school.fieldOfStudy}"></span></p>
-						<p style="font-size: 12pt; margin: 4; font-style: italic">Minor: <span th:text="${school.minor}"></span></p>
-					</div>
-					<div style="text-align: right; width: 50%;">
-						<p style="font-size: 12pt; margin: 4"><span th:text="${school.startDate}"></span> - <span th:text="${school.endDate}"></span></p>
-					</div>
-				</div>
+				<table style="width: 100%">
+					<tr style="width: 100%;">
+						<td>
+							<div style="text-align: left;">
+								<p style="font-size: 12pt; margin: 0; padding-bottom: 5px; font-weight: bold;" th:text="${school.school}"></p>
+								<p style="font-size: 12pt; margin: 0; font-style: italic">Degree: <span th:text="${school.degree}"></span></p>
+								<p style="font-size: 12pt; margin: 0; font-style: italic">Major: <span th:text="${school.fieldOfStudy}"></span></p>
+								<p style="font-size: 12pt; margin: 0; font-style: italic">Minor: <span th:text="${school.minor}"></span></p>
+							</div>
+						</td>
+						<td>
+							<div style="text-align: right;">
+								<p style="font-size: 12pt; margin: 0"><span th:text="${school.startDate}"></span> - <span th:text="${school.endDate}"></span></p>
+							</div>
+						</td>
+					</tr>
+				</table>
 			</div>
 		</div>
 		<div style="margin: 15px 0px; padding: 0px 5px; text-align: left">
-			<p style="font-size: 14pt; font-weight: bold; text-align: left; margin: 4">WORK EXPERIENCE</p>
+			<p style="font-size: 14pt; font-weight: bold; text-align: left; margin: 1">WORK EXPERIENCE</p>
 			<hr style="border: dashed 2px #e8e8e8;" />
 			<div style="margin: 5px 0px" th:each="job : ${workHistory}">
 				<div style="display: flex; justify-content: space-between">
 					<div>
-						<p style="font-size: 12pt; margin: 4" th:text="${job.company}"></p>
-						<p style="font-size: 12pt; margin: 4; font-style: italic" th:text="${job.role}"></p>
+						<p style="font-size: 12pt; margin: 1" th:text="${job.company}"></p>
+						<p style="font-size: 12pt; margin: 1; font-style: italic" th:text="${job.role}"></p>
 					</div>
-					<p style="font-size: 12pt; margin: 4"><span th:text="${job.startDate}"></span> - <span th:text="${job.endDate}"></span></p>
+					<p style="font-size: 12pt; margin: 1"><span th:text="${job.startDate}"></span> - <span th:text="${job.endDate}"></span></p>
 				</div>
 				<div>
-					<p style="font-size: 12pt; margin: 4" th:text="${job.responsibilities}"></p>
+					<p style="font-size: 12pt; margin: 1" th:text="${job.responsibilities}"></p>
 					<div style="display: flex; justify-content: left; flex-wrap: wrap">
 						<div th:each="tech : ${job.technologies}" style="display: inline-block; font-size: 10pt; margin: 2; padding: 2px 5px; color: #e8e8e8; background-color: #6db8e3; width: auto; border-radius: 10px">
 							<p th:text="${tech.text}" style="margin: 0"></p>
@@ -68,18 +74,18 @@
 			</div>
 		</div>
 		<div style="margin: 15px 0px; padding: 0px 5px; text-align: left">
-			<p style="font-size: 14pt; font-weight: bold; text-align: left; margin: 4">PROJECTS</p>
+			<p style="font-size: 14pt; font-weight: bold; text-align: left; margin: 1">PROJECTS</p>
 			<hr style="border: dashed 2px #e8e8e8;" />
 			<div style="margin: 5px 0px" th:each="project : ${projects}">
 				<div style="display: flex; justify-content: space-between">
 					<div>
-						<p style="font-size: 12pt; margin: 4" th:text="${project.name}"></p>
-						<p style="font-size: 12pt; margin: 4; font-style: italic" th:text="${project.type}"></p>
+						<p style="font-size: 12pt; margin: 1" th:text="${project.name}"></p>
+						<p style="font-size: 12pt; margin: 1; font-style: italic" th:text="${project.type}"></p>
 					</div>
-					<p style="font-size: 12pt; margin: 4"><span th:text="${project.startDate}"></span> - <span th:text="${project.endDate}"></span></p>
+					<p style="font-size: 12pt; margin: 1"><span th:text="${project.startDate}"></span> - <span th:text="${project.endDate}"></span></p>
 				</div>
 				<div>
-					<p style="font-size: 12pt; margin: 4" th:text="${project.description}"></p>
+					<p style="font-size: 12pt; margin: 1" th:text="${project.description}"></p>
 					<div style="display: flex; justify-content: left; flex-wrap: wrap">
 						<div th:each="tech : ${project.technologies}" style="display: inline-block; font-size: 10pt; margin: 2; padding: 2px 5px; color: #e8e8e8; background-color: #6db8e3; width: auto; border-radius: 10px">
 							<p th:text="${tech.text}" style="margin: 0"></p>
