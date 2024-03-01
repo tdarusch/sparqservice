@@ -72,8 +72,7 @@ public class ProfileService {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_PDF);
         String filename = "spb_profile.pdf";
-        headers.setContentDispositionFormData(filename, filename);
-        headers.add("Content-Disposition", "inline");
+        headers.add("Content-Disposition", "inline; filename=" + filename);
         headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
         
         ResponseEntity<byte[]> response = new ResponseEntity<>(outputStream.toByteArray(), headers, HttpStatus.OK);
@@ -114,9 +113,9 @@ public class ProfileService {
         String lastName = profile.getContact().getLastName();
 
         return(
-            firstName != null ? firstName + " " : "" 
-            + middleName != null ? middleName + " ": "" 
-            + lastName != null ? lastName : ""
+            (firstName != null ? firstName + " " : "") 
+            + (middleName != null ? middleName + " ": "" )
+            + (lastName != null ? lastName : "")
         );
     }
 
@@ -129,8 +128,8 @@ public class ProfileService {
         String email = profile.getContact().getEmail();
 
         return(
-            phone != null ? phone + " " : ""
-            + email != null ? "| " + email : ""
+            (phone != null ? phone + " " : "")
+            + (email != null ? "| " + email : "")
         );
     }
 
