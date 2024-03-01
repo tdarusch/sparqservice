@@ -46,7 +46,7 @@ public class Profile {
   private List<Skill> skills;
 
   @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
-  @JoinColumn(name = "list_item_id")
+  @JoinColumn(name = "list_item_id", nullable = false)
   private List<BulletListEntry> bulletList;
 
   @JsonIgnore
