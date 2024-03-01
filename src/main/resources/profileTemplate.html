@@ -61,7 +61,7 @@
 						<td>
 							<div style="text-align: left;">
 								<p style="font-size: 12pt; margin: 0; padding-bottom: 5px; font-weight: bold;" th:text="${job.company}"></p>
-								<p style="font-size: 12pt; margin: 0; font-style: italic">Degree: <span th:text="${job.role}"></span></p>
+								<p style="font-size: 12pt; margin: 0; font-style: italic">Role: <span th:text="${job.role}"></span></p>
 							</div>
 						</td>
 						<td>
@@ -72,7 +72,7 @@
 					</tr>
 				</table>
 				<div>
-					<p style="font-size: 12pt; margin: 0; padding: 5px 0px" th:text="${job.responsibilities}"></p>
+					<p style="font-size: 12pt; margin: 0; padding: 5px 5px" th:text="${job.responsibilities}"></p>
 					<div style="display: flex; justify-content: left; flex-wrap: wrap">
 						<div th:each="tech : ${job.technologies}" style="display: inline-block; font-size: 10pt; margin: 2; padding: 2px 5px; color: #e8e8e8; background-color: #6db8e3; width: auto; border-radius: 10px">
 							<p th:text="${tech.text}" style="margin: 0"></p>
@@ -90,7 +90,7 @@
 						<td>
 							<div style="text-align: left;">
 								<p style="font-size: 12pt; margin: 0; padding-bottom: 5px; font-weight: bold;" th:text="${project.name}"></p>
-								<p style="font-size: 12pt; margin: 0; font-style: italic">Degree: <span th:text="${project.type}"></span></p>
+								<p style="font-size: 12pt; margin: 0; font-style: italic">Type: <span th:text="${project.type}"></span></p>
 							</div>
 						</td>
 						<td>
@@ -101,7 +101,7 @@
 					</tr>
 				</table>
 				<div>
-					<p style="font-size: 12pt; margin: 0; padding: 5px 0px" th:text="${project.description}"></p>
+					<p style="font-size: 12pt; margin: 0; padding: 5px 5px" th:text="${project.description}"></p>
 					<div style="display: flex; justify-content: left; flex-wrap: wrap">
 						<div th:each="tech : ${project.technologies}" style="display: inline-block; font-size: 10pt; margin: 2; padding: 2px 5px; color: #e8e8e8; background-color: #6db8e3; width: auto; border-radius: 10px">
 							<p th:text="${tech.text}" style="margin: 0"></p>
@@ -110,7 +110,7 @@
 				</div>
 			</div>
 		</div>
-		<div style="margin: 15px 0px; padding: 0px 5px; color: #e8e8e8; background-color: #6db8e3; height: 15px; font-size: 10pt; display: flex; flex-direction: column; justify-content: center">
+		<div style="margin: 15px 0px; padding: 0px 5px; color: #e8e8e8; background-color: #6db8e3; height: 15px; font-size: 9pt; display: flex; flex-direction: column; justify-content: center">
 			Generated with Sparq Profile Builder
 		</div>
   </body>
