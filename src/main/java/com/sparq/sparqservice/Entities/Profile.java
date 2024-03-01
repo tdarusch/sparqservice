@@ -6,8 +6,8 @@ import java.util.List;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.sparq.sparqservice.Entities.UtilEntities.BulletListEntry;
 
-import jakarta.annotation.Nullable;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -18,7 +18,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -30,11 +29,6 @@ public class Profile {
   @Column(columnDefinition = "serial", name = "p_id")
   private Long id;
 
-  @Nullable
-  @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
-  @JoinColumn(name = "contact_id")
-  private Contact contact;
-
   @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
   @JoinColumn(name = "education_id", nullable = false)
   private List<Education> education;
@@ -42,11 +36,6 @@ public class Profile {
   @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
   @JoinColumn(name = "job_id", nullable = false)
   private List<Job> workHistory;
-
-  @Nullable
-  @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
-  @JoinColumn(name = "about_id")
-  private About about;
 
   @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
   @JoinColumn(name = "project_id", nullable = false)
@@ -56,6 +45,10 @@ public class Profile {
   @JoinColumn(name = "skill_id", nullable = false)
   private List<Skill> skills;
 
+  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+  @JoinColumn(name = "list_item_id")
+  private List<BulletListEntry> bulletList;
+
   @JsonIgnore
   @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "user_id")
@@ -63,7 +56,13 @@ public class Profile {
 
   private String name;
   private boolean masterProfile;
-  private boolean savedProfile;
+  private String firstName;
+  private String middleName;
+  private String lastName;
+  private String headline;
+  private String email;
+  private String phone;
+  private String bio;
 
   @DateTimeFormat(pattern = "MM/dd/yyyy")
   private LocalDate createdDate;
@@ -74,14 +73,6 @@ public class Profile {
 
   public void setId(Long id) {
     this.id = id;
-  }
-
-  public Contact getContact() {
-    return contact;
-  }
-
-  public void setContact(Contact contact) {
-    this.contact = contact;
   }
 
   public List<Education> getEducation() {
@@ -98,14 +89,6 @@ public class Profile {
 
   public void setWorkHistory(List<Job> workHistory) {
     this.workHistory = workHistory;
-  }
-
-  public About getAbout() {
-    return about;
-  }
-
-  public void setAbout(About about) {
-    this.about = about;
   }
 
   public List<Project> getProjects() {
@@ -148,20 +131,76 @@ public class Profile {
     this.masterProfile = masterProfile;
   }
 
-  public boolean getSavedProfile() {
-    return savedProfile;
-  }
-
-  public void setSavedProfile(Boolean savedProfile) {
-    this.savedProfile = savedProfile;
-  }
-
   public LocalDate getCreatedDate() {
     return createdDate;
   }
 
   public void setCreatedDate(LocalDate createdDate) {
     this.createdDate = createdDate;
+  }
+  
+  public List<BulletListEntry> getBulletList() {
+    return bulletList;
+  }
+
+  public void setBulletList(List<BulletListEntry> bulletList) {
+    this.bulletList = bulletList;
+  }
+
+  public String getFirstName() {
+    return firstName;
+  }
+
+  public void setFirstName(String firstName) {
+    this.firstName = firstName;
+  }
+
+  public String getMiddleName() {
+    return middleName;
+  }
+
+  public void setMiddleName(String middleName) {
+    this.middleName = middleName;
+  }
+
+  public String getLastName() {
+    return lastName;
+  }
+
+  public void setLastName(String lastName) {
+    this.lastName = lastName;
+  }
+
+  public String getPhone() {
+    return phone;
+  }
+
+  public void setPhone(String phone) {
+    this.phone = phone;
+  }
+
+  public String getEmail() {
+    return email;
+  }
+
+  public void setEmail(String email) {
+    this.email = email;
+  }
+
+  public String getHeadline() {
+    return headline;
+  }
+
+  public void setHeadline(String headline) {
+    this.headline = headline;
+  }
+
+  public String getBio() {
+    return bio;
+  }
+
+  public void setBio(String bio) {
+    this.bio = bio;
   }
 
 }

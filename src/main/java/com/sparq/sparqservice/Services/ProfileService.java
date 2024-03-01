@@ -91,10 +91,10 @@ public class ProfileService {
 
         Context ctx = new Context();
         ctx.setVariable("name", getName(profile));
-        ctx.setVariable("headline", profile.getContact().getHeadline());
+        ctx.setVariable("headline", profile.getHeadline());
         ctx.setVariable("contact", getContact(profile));
-        ctx.setVariable("bio", getBio(profile));
-        ctx.setVariable("bulletList", profile.getAbout() != null ? profile.getAbout().getBulletList() : null);
+        ctx.setVariable("bio", profile.getBio());
+        ctx.setVariable("bulletList", profile.getBulletList());
         ctx.setVariable("skills", profile.getSkills());
         ctx.setVariable("education", profile.getEducation());
         ctx.setVariable("workHistory", profile.getWorkHistory());
@@ -105,12 +105,9 @@ public class ProfileService {
 
     //helper methods for formatting profile entity into string components
     private String getName(Profile profile) {
-        if(profile.getContact() == null) {
-            return "";
-        }
-        String firstName = profile.getContact().getFirstName();
-        String middleName = profile.getContact().getMiddleName();
-        String lastName = profile.getContact().getLastName();
+        String firstName = profile.getFirstName();
+        String middleName = profile.getMiddleName();
+        String lastName = profile.getLastName();
 
         return(
             (firstName != null ? firstName + " " : "") 
@@ -120,25 +117,13 @@ public class ProfileService {
     }
 
     private String getContact(Profile profile) {
-        if(profile.getContact() == null) {
-            return "";
-        }
-
-        String phone = profile.getContact().getPhone();
-        String email = profile.getContact().getEmail();
+        String phone = profile.getPhone();
+        String email = profile.getEmail();
 
         return(
             (phone != null ? phone + " " : "")
             + (email != null ? "| " + email : "")
         );
-    }
-
-    private String getBio(Profile profile) {
-        if(profile.getAbout() == null) {
-            return "";
-        }
-
-        return(profile.getAbout().getDescription() != null ? profile.getAbout().getDescription() : "");
     }
 
 }

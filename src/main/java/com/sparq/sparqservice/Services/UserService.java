@@ -10,7 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.sparq.sparqservice.Entities.About;
 import com.sparq.sparqservice.Entities.Profile;
 import com.sparq.sparqservice.Entities.User;
 import com.sparq.sparqservice.Entities.UtilEntities.ProfileDTO;
@@ -119,7 +118,6 @@ public class UserService {
   //add a new profile to a user's saved profiles (pdfs)
   public Profile addSavedProfile(UUID userId, Profile profile) {
     User user = getUserById(userId);
-    profile.setSavedProfile(true);
     profile.setMasterProfile(false);
     profile.setUser(user);
     user.getProfiles().add(profile);
