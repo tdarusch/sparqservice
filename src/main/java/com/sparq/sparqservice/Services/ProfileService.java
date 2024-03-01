@@ -73,6 +73,7 @@ public class ProfileService {
         headers.setContentType(MediaType.APPLICATION_PDF);
         String filename = "spb_profile.pdf";
         headers.setContentDispositionFormData(filename, filename);
+        headers.add("Content-Disposition", "inline");
         headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
         
         ResponseEntity<byte[]> response = new ResponseEntity<>(outputStream.toByteArray(), headers, HttpStatus.OK);
