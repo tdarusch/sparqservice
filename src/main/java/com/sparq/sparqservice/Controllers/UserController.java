@@ -38,20 +38,10 @@ public class UserController {
   public List<ProfileDTO> getProfilesInfo(@PathVariable UUID userId) {
     return service.getAllProfilesInfo(userId);
   }
-
-  @GetMapping(value = "/users/{userId}/profiles/saved", produces = MediaType.APPLICATION_JSON_VALUE)
-  public List<ProfileDTO> getSavedProfilesInfo(@PathVariable UUID userId) {
-    return service.getAllSavedProfilesInfo(userId);
-  }
-
+  
   @PostMapping(value = "/users/{userId}/profiles", produces = MediaType.APPLICATION_JSON_VALUE)
   public Profile addProfile(@RequestBody Profile profile, @PathVariable UUID userId) {
     return service.addProfile(userId, profile);
-  }
-
-  @PostMapping(value = "/users/{userId}/profiles/saved", produces = MediaType.APPLICATION_JSON_VALUE)
-  public Profile addSavedProfile(@RequestBody Profile profile, @PathVariable UUID userId) {
-    return service.addSavedProfile(userId, profile);
   }
 
   @GetMapping(value = "/users/{userId}/info", produces = MediaType.APPLICATION_JSON_VALUE)

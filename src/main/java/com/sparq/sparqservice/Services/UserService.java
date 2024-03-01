@@ -85,23 +85,6 @@ public class UserService {
     return profileDTOs;    
   }
 
-  //similar to getAllProfilesInfo but returns the same info for a users saved profile pdfs
-  //returns empty list if none saved
-  public List<ProfileDTO> getAllSavedProfilesInfo(UUID userId) {
-    List<ProfileDTO> profileDTOs = new ArrayList<ProfileDTO>();
-    User user = getUserById(userId);
-    List<Profile> savedProfiles = profileRepo.findByUserAndSavedProfile(user, true);
-    
-    for(Profile profile : savedProfiles) {
-      ProfileDTO dto = new ProfileDTO();
-      dto.setId(profile.getId());
-      dto.setName(profile.getName());
-      profileDTOs.add(dto);
-    }
-
-    return profileDTOs;
-  }
-
   //save a new editable profile to the user's list of profiles
   //if user has no profiles make this profile their master profile
   public Profile addProfile(UUID userId, Profile profile) {
@@ -112,16 +95,6 @@ public class UserService {
     profile.setCreatedDate(LocalDate.now());
     profile.setUser(user);
     profileRepo.save(profile);
-    return profile;
-  }
-
-  //add a new profile to a user's saved profiles (pdfs)
-  public Profile addSavedProfile(UUID userId, Profile profile) {
-    User user = getUserById(userId);
-    profile.setMasterProfile(false);
-    profile.setUser(user);
-    user.getProfiles().add(profile);
-    userRepo.save(user);
     return profile;
   }
 
