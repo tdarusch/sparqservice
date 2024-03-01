@@ -62,6 +62,8 @@ public class Profile {
   private String headline;
   private String email;
   private String phone;
+
+  @Column(columnDefinition = "text")
   private String bio;
 
   @DateTimeFormat(pattern = "MM/dd/yyyy")
