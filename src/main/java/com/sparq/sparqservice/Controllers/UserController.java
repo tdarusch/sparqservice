@@ -48,5 +48,10 @@ public class UserController {
   public UserDTO getMethodName(@PathVariable UUID userId) {
     return service.getUserInfoDto(userId);
   }
+
+  @PostMapping(value = "/users/{userId}/profiles/master/clone", produces = MediaType.APPLICATION_JSON_VALUE)
+  public Long cloneMasterProfile(@PathVariable UUID userId) {
+    return service.cloneMasterProfile(userId);
+  }
   
 }
