@@ -1,5 +1,6 @@
 package com.sparq.sparqservice.Entities.UtilEntities;
 
+import java.util.List;
 import java.util.UUID;
 
 //Data transfer object for holding basic user info
@@ -10,6 +11,7 @@ public class UserDTO {
   private Boolean admin;
   private String email;
   private String imageUrl;
+  private List<ProfileDTO> profiles;
 
   public UUID getId() {
     return id;
@@ -49,6 +51,14 @@ public class UserDTO {
 
   public  void setImageUrl(String imageUrl) {
     this.imageUrl = imageUrl;
+  }
+
+  public List<ProfileDTO> getProfiles() {
+    return profiles;
+  }
+
+  public void setProfiles(List<ProfileDTO> profiles) {
+    this.profiles = profiles;
   }
 
 }

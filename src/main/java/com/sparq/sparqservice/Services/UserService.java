@@ -50,6 +50,7 @@ public class UserService {
       dto.setAdmin(user.getAdmin());
       dto.setEmail(user.getEmail());
       dto.setImageUrl(user.getImageUrl());
+      dto.setProfiles(getAllProfilesInfo(user.getId()));
       userDTOs.add(dto);
     }
 
