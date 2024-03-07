@@ -132,78 +132,78 @@ public class UserService {
     clonedProfile.setEmail(masterProfile.getEmail());
     clonedProfile.setPhone(masterProfile.getPhone());
     clonedProfile.setBio(masterProfile.getBio());
+    clonedProfile.setBulletList(new ArrayList<BulletListEntry>());
+    clonedProfile.setEducation(new ArrayList<Education>());
+    clonedProfile.setProjects(new ArrayList<Project>());
+    clonedProfile.setWorkHistory(new ArrayList<Job>());
+    clonedProfile.setSkills(new ArrayList<Skill>());
 
-    List<Education> clonedEducation = new ArrayList<Education>();
     masterProfile.getEducation().stream().forEach(ed -> {
       Education education = new Education();
+      education.setId(null);
       education.setDegree(ed.getDegree());
       education.setSchool(ed.getSchool());
       education.setFieldOfStudy(ed.getFieldOfStudy());
       education.setMinor(ed.getMinor());
       education.setStartDate(ed.getStartDate());
       education.setEndDate(ed.getEndDate());
-      clonedEducation.add(education);
+      clonedProfile.getEducation().add(education);
     });
-    clonedProfile.setEducation(clonedEducation);
 
-    List<Job> clonedJobs = new ArrayList<Job>();
     masterProfile.getWorkHistory().stream().forEach(job -> {
       Job clonedJob = new Job();
-      List<JobTechnologyListEntry> clonedTechs = new ArrayList<JobTechnologyListEntry>();
+      clonedJob.setId(null);
+      clonedJob.setTechnologies(new ArrayList<JobTechnologyListEntry>());
       job.getTechnologies().stream().forEach(tech -> {
         JobTechnologyListEntry clonedTech = new JobTechnologyListEntry();
+        clonedTech.setId(null);
         clonedTech.setText(tech.getText());
-        clonedTechs.add(clonedTech);
+        clonedJob.getTechnologies().add(clonedTech);
       });
-      clonedJob.setTechnologies(clonedTechs);
       clonedJob.setStartDate(job.getStartDate());
       clonedJob.setEndDate(job.getEndDate());
       clonedJob.setCompany(job.getCompany());
       clonedJob.setRole(job.getRole());
       clonedJob.setResponsibilities(job.getResponsibilities());
       clonedJob.setCurrent(job.getCurrent());
-      clonedJobs.add(clonedJob);
+      clonedProfile.getWorkHistory().add(clonedJob);
     });
-    clonedProfile.setWorkHistory(clonedJobs);
 
-    List<Project> clonedProjects = new ArrayList<Project>();
     masterProfile.getProjects().stream().forEach(project -> {
       Project clonedProject = new Project();
-      List<ProjectTechnologyListEntry> clonedTechs = new ArrayList<ProjectTechnologyListEntry>();
+      clonedProject.setId(null);
+      clonedProject.setTechnologies(new ArrayList<ProjectTechnologyListEntry>());
       project.getTechnologies().stream().forEach(tech -> {
         ProjectTechnologyListEntry clonedTech = new ProjectTechnologyListEntry();
+        clonedTech.setId(null);
         clonedTech.setText(tech.getText());
-        clonedTechs.add(clonedTech);
+        clonedProject.getTechnologies().add(clonedTech);
       });
-      clonedProject.setTechnologies(clonedTechs);
       clonedProject.setStartDate(project.getStartDate());
       clonedProject.setEndDate(project.getEndDate());
       clonedProject.setName(project.getName());
       clonedProject.setDescription(project.getDescription());
       clonedProject.setType(project.getType());
       clonedProject.setLink(project.getLink());
-      clonedProjects.add(clonedProject);
+      clonedProfile.getProjects().add(clonedProject);
     });
-    clonedProfile.setProjects(clonedProjects);
 
-    List<Skill> clonedSkills = new ArrayList<Skill>();
     masterProfile.getSkills().stream().forEach(skill -> {
       Skill clonedSkill = new Skill();
+      clonedSkill.setId(null);
       clonedSkill.setType(skill.getType());
       clonedSkill.setName(skill.getName());
       clonedSkill.setProficiency(skill.getProficiency());
       clonedSkill.setMonths(skill.getMonths());
-      clonedSkills.add(clonedSkill);
+      clonedProfile.getSkills().add(clonedSkill);
     });
-    clonedProfile.setSkills(clonedSkills);
 
-    List<BulletListEntry> clonedBulletList = new ArrayList<BulletListEntry>();
     masterProfile.getBulletList().stream().forEach(entry -> {
       BulletListEntry clonedEntry = new BulletListEntry();
+      clonedEntry.setId(null);
       clonedEntry.setText(entry.getText());
-      clonedBulletList.add(clonedEntry);
+      clonedProfile.getBulletList().add(clonedEntry);
     });
-    clonedProfile.setBulletList(clonedBulletList);
 
     return profileRepo.save(clonedProfile).getId();
   }
