@@ -32,8 +32,8 @@ public class ProfileController {
     }
 
     @DeleteMapping(value = "/profiles/{profileId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public void deleteUserProfile(@PathVariable Long profileId, @RequestBody Profile profile) {
-        service.deleteProfile(profileId, profile);
+    public void deleteUserProfile(@PathVariable Long profileId) {
+        service.deleteProfile(profileId);
     }
 
     @GetMapping(value = "/profiles/{profileId}/pdf", produces = MediaType.APPLICATION_PDF_VALUE)

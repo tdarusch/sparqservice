@@ -52,11 +52,8 @@ public class ProfileService {
     }
 
     //deletes profile for a given id
-    public void deleteProfile(Long profileId, Profile profile) {
-        if(profileId != profile.getId()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Request ID does not match ID in body.");
-        }
-        profileRepo.delete(profile);
+    public void deleteProfile(Long profileId) {
+        profileRepo.deleteById(profileId);
     }
 
     public ResponseEntity<byte[]> generateProfilePdf(Long profileId) {
