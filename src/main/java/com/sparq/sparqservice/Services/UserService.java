@@ -35,8 +35,17 @@ public class UserService {
 
   //returns a list of all users' names and ids
   //used for getting list of all users for admins
-  public List<UserDTO> getAllUserInfo() {
-    List<User> users = userRepo.findAll();
+  public List<UserDTO> getAllUserInfo(String name) {
+    List<User> users;
+    if(name != null)
+    {
+      users = userRepo.findByNameContainingAllIgnoringCase(name);
+    }
+    else
+    {
+      users = userRepo.findAll();
+    }
+    
     List<UserDTO> userDTOs = new ArrayList<UserDTO>();
 
     for(User user : users) {

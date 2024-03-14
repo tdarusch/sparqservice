@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 public class UserController {
@@ -25,8 +26,8 @@ public class UserController {
   UserService service;
 
   @GetMapping(value = "/users/info", produces = MediaType.APPLICATION_JSON_VALUE)
-  public List<UserDTO> getUserInfo() {
-    return service.getAllUserInfo();
+  public List<UserDTO> getUserInfo(@RequestParam(required = false) String name) {
+    return service.getAllUserInfo(name);
   }
 
   @GetMapping(value = "/users/{userId}/profiles/master", produces = MediaType.APPLICATION_JSON_VALUE)
