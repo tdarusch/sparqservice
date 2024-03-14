@@ -59,7 +59,7 @@ public class UserService {
       dto.setAdmin(user.getAdmin());
       dto.setEmail(user.getEmail());
       dto.setImageUrl(user.getImageUrl());
-      dto.setProfiles(getAllProfilesInfo(user.getId()));
+      dto.setProfiles(getAllProfilesInfo(user.getId(), null));
       userDTOs.add(dto);
     }
 
@@ -86,10 +86,17 @@ public class UserService {
 
   //returns the name and ID for each profile
   //returns empty array if no profiles
-  public List<ProfileDTO> getAllProfilesInfo(UUID userId) {
+  public List<ProfileDTO> getAllProfilesInfo(UUID userId, String name) {
     User user = getUserById(userId);
     List<ProfileDTO> profileDTOs = new ArrayList<ProfileDTO>();
-    List<Profile> profiles = profileRepo.findByUserAndMasterProfile(user, false);
+    List<Profile> profiles;
+    if(name != null)
+    {
+      profiles = profileRepo.findByNameContainingAllIgnoreCase(name);
+    }
+    else{
+      profiles = profileRepo.findByUserAndMasterProfile(user, false);
+    }
 
     for(Profile profile : profiles) {
       ProfileDTO dto = new ProfileDTO();
