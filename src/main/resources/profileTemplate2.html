@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en"></head>
+<link rel="stylesheet" href="style.css"> 
+  <body>
+    <div class="Header"> 
+        <p style="color: #6db8e3" th:text="${name}"></p>
+        <h1 style="color: #6db8e3"> Ward Tyre </h1>
+        <p th:text="${headline}"></p>
+        <h2> Headline </h2>
+        <h3 style="color: #6db8e3">Contact Information </h3>
+        <p th:text="${contact}"></p>
+        <p> This is a test contact info <br /> this is a new line </p>
+    </div>
+
+    <div class="Image">
+        <p> this is where the pic will go maybe <br /> pic from google profile</p>
+    </div>
+
+    <div class="About">
+        <h3 style="color: #6db8e3">About Me</h3>
+        <p> brief description of me! </p>
+        <p th:text="${bio}"></p>
+        <p style="color: #6db8e3">Hobbies</p>
+        <div class="hobbies">
+            <div th:each="bullet : ${bulletList}">
+                <li th:text="${bullet.text}"></li>
+            </div>
+        </div>
+    </div>
+
+    <div class="Jobs">
+        <h3 style="color: #6db8e3">Experience</h3>
+        <div th:each="job : workHistory">
+            <table>
+                <tr>
+                    <td>
+                        <p th:text="${job.role}"></p>
+                        <p style="font-style: italic;" th:text="${job.compnay}"></p>
+                        <p><span th:text="${job.startDate}"></span> - <span th:text="${job.endDate}"></span></p>
+                        <p>Responsibilities: <span th:text="${job.responsibilities}"></span></p>
+
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="Education">
+        <h3 style="color: #6db8e3">Education</h3>
+        <div th:each="school : ${education}">
+        <table>
+            <tr>
+                <td>
+                    <div style="text-align: left;">
+                        <p style="font-size: 12pt; margin: 0; padding-bottom: 5px; font-weight: bold;" th:text="${school.school}"></p>
+                        <p style="font-size: 12pt; margin: 0; font-style: italic">Degree: <span th:text="${school.degree}"></span></p>
+                        <p style="font-size: 12pt; margin: 0; font-style: italic">Major: <span th:text="${school.fieldOfStudy}"></span></p>
+                        <p style="font-size: 12pt; margin: 0; font-style: italic">Minor: <span th:text="${school.minor}"></span></p>
+                    </div>
+                </td>
+            </tr>
+        </table>
+        </div>
+    </div>
+
+    <div class="skills">
+        <h3 style="color: #6db8e3">Technical Skills</h3>
+        <div th:each="skill : ${skills}">
+            <p th:text="${skill.name}"></p>
+        </div>
+    </div>
+
+    <div class="Projects">
+        <h3 style="color: #6db8e3">Notable Projects</h3>
+        <div class="project : ${projects}">
+        <table>
+            <tr>
+                <td>
+                    <p th:text="${project.name}"></p>
+                    <p style="font-style: italic;" th:text="${project.type}"></p>
+                    <p><span th:text="${project.startDate}"></span> - <span th:text="${project.endDate}"></span></p>
+                    <p th:text="${project.description}"></p>
+
+                </td>
+            </tr>
+        </table>
+        </div>
+    </div>
+
+    </body>
+</link>
+</html> 

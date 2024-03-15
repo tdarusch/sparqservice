@@ -1,0 +1,44 @@
+body {
+    font-family:Georgia, 'Times New Roman', Times, serif;
+}
+
+.Header {
+    float: right; 
+    width: 50%; 
+}
+
+.About {
+    float: left; 
+    padding: 5px; 
+    clear: left; 
+}
+
+.Image {
+    padding-top: 5px; 
+    padding-bottom: 200px; /*this is just for testing spacing purposes */
+}
+
+.Jobs {
+    float: right; 
+    width: 50%; 
+}
+
+.Education {
+    float: left; 
+    text-align: left; 
+    padding: 5px; 
+    clear: left; 
+}
+
+.skills {
+    float: right; 
+    width: 50%; 
+    padding: 5px; 
+}
+
+.Projects {
+    float: left; 
+    text-align: left; 
+    padding: 5px; 
+    clear: left; 
+}
