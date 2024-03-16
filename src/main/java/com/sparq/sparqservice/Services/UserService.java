@@ -24,6 +24,13 @@ import com.sparq.sparqservice.Entities.UtilEntities.UserDTO;
 import com.sparq.sparqservice.Repositories.ProfileRepository;
 import com.sparq.sparqservice.Repositories.UserRepository;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
+
 @Service
 public class UserService {
   
@@ -32,6 +39,9 @@ public class UserService {
 
   @Autowired
   ProfileRepository profileRepo;
+
+  @PersistenceContext
+  EntityManager entityManager;
 
   //returns a list of all users' names and ids
   //used for getting list of all users for admins
@@ -59,7 +69,7 @@ public class UserService {
       dto.setAdmin(user.getAdmin());
       dto.setEmail(user.getEmail());
       dto.setImageUrl(user.getImageUrl());
-      dto.setProfiles(getAllProfilesInfo(user.getId(), null));
+      dto.setProfiles(getAllProfilesInfo(user.getId(), null, null, null, null, null, null, null, null, null));
       userDTOs.add(dto);
     }
 
@@ -85,19 +95,21 @@ public class UserService {
   }
 
   //returns the name and ID for each profile
-  //returns empty array if no profiles
-  public List<ProfileDTO> getAllProfilesInfo(UUID userId, String name) {
-    User user = getUserById(userId);
-    List<ProfileDTO> profileDTOs = new ArrayList<ProfileDTO>();
-    List<Profile> profiles;
-    if(name != null)
-    {
-      profiles = profileRepo.findByNameContainingAllIgnoreCase(name);
-    }
-    else{
-      profiles = profileRepo.findByUserAndMasterProfile(user, false);
-    }
-
+  //returns empty array if no profiles matching criteria
+  public List<ProfileDTO> getAllProfilesInfo(
+    UUID userId, String name, String bio, String email, String phone, String headline, String company, String school, String project, String skill
+  ) {
+    CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+    CriteriaQuery<Profile> criteriaQuery = cb.createQuery(Profile.class);
+    Root<Profile> root = criteriaQuery.from(Profile.class);
+    Predicate predicate = cb.and();
+    predicate = buildProfilePredicate(
+      predicate, root, cb, userId, name, bio, email, phone, headline, company, school, project, skill
+      );
+    criteriaQuery.where(predicate);
+    List<Profile> profiles = entityManager.createQuery(criteriaQuery).getResultList();
+      
+    List<ProfileDTO> profileDTOs = new ArrayList<ProfileDTO>(); 
     for(Profile profile : profiles) {
       ProfileDTO dto = new ProfileDTO();
       dto.setId(profile.getId());
@@ -107,6 +119,51 @@ public class UserService {
     }
 
     return profileDTOs;    
+  }
+
+  //Filter null values and create a criteria query predicate for searching profiles
+  private Predicate buildProfilePredicate(
+    Predicate predicate, Root<Profile> root, CriteriaBuilder cb, 
+    UUID userId, String name, String bio, String email, String phone, 
+    String headline, String company, String school, String project, String skill
+  ){
+    predicate = cb.and(predicate, cb.equal(root.get("user").get("id"), userId));
+    if(name != null) {
+      predicate = cb.and(predicate, cb.like(cb.upper(root.get("name")), "%"+name.toUpperCase()+"%"));
+    }
+    if(bio != null) {
+      predicate = cb.and(predicate, cb.like(cb.upper(root.get("bio")), "%"+bio.toUpperCase()+"%"));
+    }
+    if(email != null) {
+      predicate = cb.and(predicate, cb.like(cb.upper(root.get("email")), "%"+email.toUpperCase()+"%"));
+    }
+    if(phone != null) {
+      predicate = cb.and(predicate, cb.like(root.get("phone"), "%"+phone+"%"));
+    }
+    if(headline != null) {
+      predicate = cb.and(predicate, cb.like(cb.upper(root.get("headline")), "%"+headline.toUpperCase()+"%"));
+    }
+    if(company != null) {
+      predicate = cb.and(predicate, cb.like(
+          cb.upper(root.join("workHistory").get("company")), "%"+company.toUpperCase()+"%"
+        ));
+    }
+    if(school != null) {
+      predicate = cb.and(predicate, cb.like(
+          cb.upper(root.join("education").get("school")), "%"+school.toUpperCase()+"%"
+        ));
+    }
+    if(project != null) {
+      predicate = cb.and(predicate, cb.like(
+        cb.upper(root.join("projects").get("name")), "%"+project.toUpperCase()+"%"
+      ));
+    }
+    if(skill != null) {
+      predicate = cb.and(predicate, cb.like(
+          cb.upper(root.join("skills").get("name")), "%"+skill.toUpperCase()+"%"
+        ));
+    }
+    return predicate;
   }
 
   //save a new editable profile to the user's list of profiles
