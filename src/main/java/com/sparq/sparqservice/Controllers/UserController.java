@@ -26,8 +26,21 @@ public class UserController {
   UserService service;
 
   @GetMapping(value = "/users/info", produces = MediaType.APPLICATION_JSON_VALUE)
-  public List<UserDTO> getUserInfo(@RequestParam(required = false) String name) {
-    return service.getAllUserInfo(name);
+  public List<UserDTO> getUserInfo(
+      @RequestParam(required = false) String userName,
+      @RequestParam(required = false) Boolean admin,
+      @RequestParam(required = false) String userEmail,
+      @RequestParam(required = false) String profileName,
+      @RequestParam(required = false) String bio,
+      @RequestParam(required = false) String profileEmail,
+      @RequestParam(required = false) String phone,
+      @RequestParam(required = false) String headline,
+      @RequestParam(required = false) String company,
+      @RequestParam(required = false) String school,
+      @RequestParam(required = false) String project,
+      @RequestParam(required = false) String skill
+    ) {
+    return service.getAllUserInfo(userName, admin, userEmail, profileName, bio, profileEmail, phone, headline, company, school, project, skill);
   }
 
   @GetMapping(value = "/users/{userId}/profiles/master", produces = MediaType.APPLICATION_JSON_VALUE)

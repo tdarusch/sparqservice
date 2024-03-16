@@ -45,19 +45,30 @@ public class UserService {
 
   //returns a list of all users' names and ids
   //used for getting list of all users for admins
-  public List<UserDTO> getAllUserInfo(String name) {
-    List<User> users;
-    if(name != null)
-    {
-      users = userRepo.findByNameContainingAllIgnoringCase(name);
+  public List<UserDTO> getAllUserInfo(String userName, Boolean admin, String userEmail,
+    String profileName, String bio, String profileEmail, String phone, String headline,
+    String company, String school, String project, String skill
+  ) {
+    
+    CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+    CriteriaQuery<User> criteriaQuery = cb.createQuery(User.class);
+    Root<User> root = criteriaQuery.from(User.class);
+    Predicate predicate = cb.and();
+    
+    if(userName != null) {
+      predicate = cb.and(predicate, cb.like(cb.upper(root.get("name")), "%"+userName.toUpperCase()+"%"));
     }
-    else
-    {
-      users = userRepo.findAll();
+    if(admin != null) {
+      predicate = cb.and(predicate, cb.equal(root.get("admin"), admin));
     }
+    if(userEmail != null) {
+      predicate = cb.and(predicate, cb.like(cb.upper(root.get("email")), "%"+userEmail.toUpperCase()+"%"));
+    }
+
+    criteriaQuery.where(predicate);
+    List<User> users = entityManager.createQuery(criteriaQuery).getResultList();
     
     List<UserDTO> userDTOs = new ArrayList<UserDTO>();
-
     for(User user : users) {
       UserDTO dto = new UserDTO();
       dto.setId(user.getId());
@@ -69,7 +80,10 @@ public class UserService {
       dto.setAdmin(user.getAdmin());
       dto.setEmail(user.getEmail());
       dto.setImageUrl(user.getImageUrl());
-      dto.setProfiles(getAllProfilesInfo(user.getId(), null, null, null, null, null, null, null, null, null));
+      dto.setProfiles(getAllProfilesInfo(
+        user.getId(), profileName, bio, profileEmail, phone, 
+        headline, company, school, project, skill
+      ));
       userDTOs.add(dto);
     }
 
