@@ -33,6 +33,7 @@ public class OAuth2LoginSuccessHandler extends SavedRequestAwareAuthenticationSu
     Map<String, Object> attributes = principal.getAttributes();
     String email = attributes.getOrDefault("email", "").toString();
     String name = attributes.getOrDefault("name", "").toString();
+    String picture = attributes.getOrDefault("picture", "").toString();
 
     userRepo.findByEmail(email)
       .ifPresentOrElse(user -> {
@@ -40,11 +41,16 @@ public class OAuth2LoginSuccessHandler extends SavedRequestAwareAuthenticationSu
         Authentication securityAuth = new OAuth2AuthenticationToken(newUser, new ArrayList<SimpleGrantedAuthority>(),
                 oAuth2AuthenticationToken.getAuthorizedClientRegistrationId());
         SecurityContextHolder.getContext().setAuthentication(securityAuth);
+        if(user.getImageUrl() == null) {
+          user.setImageUrl(picture);
+          userRepo.save(user);
+        }
       }, () -> {
         User user = new User();
         user.setEmail(email);
         user.setName(name);
-        user.setAdmin(true);
+        user.setAdmin(false);
+        user.setImageUrl(picture);
         userRepo.save(user);
         DefaultOAuth2User newUser = new DefaultOAuth2User(new ArrayList<SimpleGrantedAuthority>(), attributes, "email");
         Authentication securityAuth = new OAuth2AuthenticationToken(newUser, new ArrayList<SimpleGrantedAuthority>(),

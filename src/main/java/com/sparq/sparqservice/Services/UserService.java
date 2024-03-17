@@ -295,4 +295,10 @@ public class UserService {
     return profileRepo.save(clonedProfile).getId();
   }
 
+  public void setAdmin(UUID userId, boolean makeAdmin) {
+    User user = getUserById(userId);
+    user.setAdmin(makeAdmin);
+    userRepo.save(user);
+  }
+
 }

@@ -78,5 +78,15 @@ public class UserController {
   public Long cloneMasterProfile(@PathVariable UUID userId) {
     return service.cloneMasterProfile(userId);
   }
-  
+
+  @PostMapping(value="/users/{userId}/promote", produces = MediaType.APPLICATION_JSON_VALUE)
+  public void promoteUser(@PathVariable UUID userId) {
+    service.setAdmin(userId, true);
+  }
+
+  @PostMapping(value="/users/{userId}/demote", produces = MediaType.APPLICATION_JSON_VALUE)
+  public void demoteUser(@PathVariable UUID userId) {
+    service.setAdmin(userId, false);
+  }
+
 }
