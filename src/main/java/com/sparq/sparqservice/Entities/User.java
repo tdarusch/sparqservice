@@ -5,6 +5,8 @@ import java.util.UUID;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -29,6 +31,7 @@ public class User {
   private String email;
   private String name;
 
+  @JsonIgnore
   @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
   List<Profile> profiles;
 

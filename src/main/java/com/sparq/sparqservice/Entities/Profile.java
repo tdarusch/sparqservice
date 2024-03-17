@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sparq.sparqservice.Entities.UtilEntities.BulletListEntry;
 
 import jakarta.persistence.CascadeType;
@@ -49,7 +48,6 @@ public class Profile {
   @JoinColumn(name = "list_item_id", nullable = false)
   private List<BulletListEntry> bulletList;
 
-  @JsonIgnore
   @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "user_id")
   private User user;
