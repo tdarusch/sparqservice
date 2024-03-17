@@ -142,6 +142,7 @@ public class UserService {
     String headline, String company, String school, String project, String skill
   ){
     predicate = cb.and(predicate, cb.equal(root.get("user").get("id"), userId));
+    predicate = cb.and(predicate, cb.equal(root.get("masterProfile"), false));
     if(name != null) {
       predicate = cb.and(predicate, cb.like(cb.upper(root.get("name")), "%"+name.toUpperCase()+"%"));
     }
@@ -186,6 +187,7 @@ public class UserService {
     User user = getUserById(userId);
     if(profileRepo.findByUserAndMasterProfile(user, true).size() == 0) {
       profile.setMasterProfile(true);
+      profile.setName("Master Profile");
     }
     profile.setCreatedDate(LocalDate.now());
     profile.setUser(user);

@@ -40,11 +40,10 @@ public class ProfileService {
         profile.setUser(currentProfile.getUser());
 
         if(profile.getMasterProfile() == true) {
-            List<Profile> oldMasterProfs = profileRepo.findByNameContainingIgnoreCase("old master profile");
             List<Profile> masterProfs = profileRepo.findByUserAndMasterProfile(currentProfile.getUser(), true);
             for(Profile p : masterProfs) {
                 p.setMasterProfile(false);
-                p.setName("Old Master Profile" + (oldMasterProfs.size() == 0 ? "" : " " + Integer.toString(oldMasterProfs.size() + 1)));
+                p.setName("Old Master Profile");
                 profileRepo.save(p);
             }
         }
