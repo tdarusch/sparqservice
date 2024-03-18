@@ -1,11 +1,11 @@
 package com.sparq.sparqservice.Entities;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import com.sparq.sparqservice.Entities.UtilEntities.TechnologyListEntry;
+import com.sparq.sparqservice.Entities.UtilEntities.JobTechnologyListEntry;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -14,7 +14,6 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.GenerationType;
@@ -28,15 +27,15 @@ public class Job {
   @Column(columnDefinition = "serial")
   private Long id;
 
-  @OneToMany(cascade = CascadeType.ALL)
-  @JoinColumn(name = "job_id")
-  private List<TechnologyListEntry> technologies;
+  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+  @JoinColumn(name = "job_id", nullable = false)
+  private List<JobTechnologyListEntry> technologies;
 
-  @DateTimeFormat(pattern = "MM/yyyy")
-  private Date startDate;
+  @DateTimeFormat(pattern = "MM/dd/yyyy")
+  private LocalDate startDate;
   
-  @DateTimeFormat(pattern = "MM/yyyy")
-  private Date endDate;
+  @DateTimeFormat(pattern = "MM/dd/yyyy")
+  private LocalDate endDate;
 
   private String company;
   private String role;
@@ -46,10 +45,6 @@ public class Job {
 
   private Boolean current;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "profile_id")
-  private Profile profile;
-
   public Long getId() {
     return id;
   }
@@ -58,27 +53,27 @@ public class Job {
     this.id = id;
   }
 
-  public List<TechnologyListEntry> getTechnologies() {
+  public List<JobTechnologyListEntry> getTechnologies() {
     return technologies;
   }
 
-  public void setTechnologies(List<TechnologyListEntry> technologies) {
+  public void setTechnologies(List<JobTechnologyListEntry> technologies) {
     this.technologies = technologies;
   }
 
-  public Date getStartDate() {
+  public LocalDate getStartDate() {
     return startDate;
   }
 
-  public void setStartDate(Date startDate) {
+  public void setStartDate(LocalDate startDate) {
     this.startDate = startDate;
   }
 
-  public Date getEndDate() {
+  public LocalDate getEndDate() {
     return endDate;
   }
 
-  public void setEndDate(Date endDate) {
+  public void setEndDate(LocalDate endDate) {
     this.endDate = endDate;
   }
 
@@ -112,14 +107,6 @@ public class Job {
 
   public void setCurrent(Boolean current) {
     this.current = current;
-  }
-
-  public Profile getProfile() {
-    return profile;
-  }
-
-  public void setProfile(Profile profile) {
-    this.profile = profile;
   }
 
 }

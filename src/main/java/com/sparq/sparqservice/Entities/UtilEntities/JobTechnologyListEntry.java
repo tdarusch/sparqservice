@@ -8,15 +8,14 @@ import jakarta.persistence.Table;
 import jakarta.persistence.GenerationType;
 
 @Entity
-@Table(name = "BULLETLIST", schema = "sparq")
-public class BulletListEntry {
+@Table(name = "TECHNOLOGYLIST_JOBS", schema = "sparq")
+public class JobTechnologyListEntry {
   
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(columnDefinition = "serial")
   private Long id;
 
-  @Column(columnDefinition = "text")
   private String text;
 
   public Long getId() {

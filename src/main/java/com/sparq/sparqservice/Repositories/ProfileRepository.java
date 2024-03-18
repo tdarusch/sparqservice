@@ -11,6 +11,7 @@ import com.sparq.sparqservice.Entities.User;
 public interface ProfileRepository extends JpaRepository<Profile, Long> {
   
   List<Profile> findByUserAndMasterProfile(User user, boolean masterProfile);
-  List<Profile> findByUserAndSavedProfile(User user, boolean savedProfile);
+  List <Profile> findByNameContainingIgnoreCase(String name);
+  List<Profile> findByNameContainingAllIgnoreCase(String name);
 
 }

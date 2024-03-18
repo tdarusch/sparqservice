@@ -1,6 +1,11 @@
 package com.sparq.sparqservice.Entities;
 
+import java.time.LocalDate;
 import java.util.List;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
+import com.sparq.sparqservice.Entities.UtilEntities.BulletListEntry;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -12,7 +17,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -24,34 +28,44 @@ public class Profile {
   @Column(columnDefinition = "serial", name = "p_id")
   private Long id;
 
-  @OneToOne(cascade = CascadeType.ALL, mappedBy = "profile")
-  private Contact contact;
-
-  @OneToMany(cascade = CascadeType.ALL, mappedBy = "profile")
+  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+  @JoinColumn(name = "education_id", nullable = false)
   private List<Education> education;
 
-  @OneToMany(cascade = CascadeType.ALL, mappedBy = "profile")
+  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+  @JoinColumn(name = "job_id", nullable = false)
   private List<Job> workHistory;
 
-  @OneToOne(cascade = CascadeType.ALL, mappedBy = "profile")
-  private About about;
-
-  @OneToMany(cascade = CascadeType.ALL, mappedBy = "profile")
+  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+  @JoinColumn(name = "project_id", nullable = false)
   private List<Project> projects;
 
-  @OneToMany(cascade = CascadeType.ALL, mappedBy = "profile")
+  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+  @JoinColumn(name = "skill_id", nullable = false)
   private List<Skill> skills;
 
-  @OneToMany(cascade = CascadeType.ALL, mappedBy = "profile")
-  private List<Equivalency> industryEquivalency;
+  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+  @JoinColumn(name = "list_item_id", nullable = false)
+  private List<BulletListEntry> bulletList;
 
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "user_id")
   private User user;
 
   private String name;
-  private Boolean masterProfile;
-  private Boolean savedProfile;
+  private boolean masterProfile;
+  private String firstName;
+  private String middleName;
+  private String lastName;
+  private String headline;
+  private String email;
+  private String phone;
+
+  @Column(columnDefinition = "text")
+  private String bio;
+
+  @DateTimeFormat(pattern = "MM/dd/yyyy")
+  private LocalDate createdDate;
 
   public Long getId() {
     return id;
@@ -59,14 +73,6 @@ public class Profile {
 
   public void setId(Long id) {
     this.id = id;
-  }
-
-  public Contact getContact() {
-    return contact;
-  }
-
-  public void setContact(Contact contact) {
-    this.contact = contact;
   }
 
   public List<Education> getEducation() {
@@ -85,14 +91,6 @@ public class Profile {
     this.workHistory = workHistory;
   }
 
-  public About getAbout() {
-    return about;
-  }
-
-  public void setAbout(About about) {
-    this.about = about;
-  }
-
   public List<Project> getProjects() {
     return projects;
   }
@@ -107,14 +105,6 @@ public class Profile {
 
   public void setSkills(List<Skill> skills) {
     this.skills = skills;
-  }
-
-  public List<Equivalency> getIndustryEquivalency() {
-    return industryEquivalency;
-  }
-
-  public void setIndustryEquivalency(List<Equivalency> industryEquivalency) {
-    this.industryEquivalency = industryEquivalency;
   }
 
   public String getName() {
@@ -141,12 +131,76 @@ public class Profile {
     this.masterProfile = masterProfile;
   }
 
-  public boolean getSavedProfile() {
-    return savedProfile;
+  public LocalDate getCreatedDate() {
+    return createdDate;
   }
 
-  public void setSavedProfile(Boolean savedProfile) {
-    this.savedProfile = savedProfile;
+  public void setCreatedDate(LocalDate createdDate) {
+    this.createdDate = createdDate;
+  }
+  
+  public List<BulletListEntry> getBulletList() {
+    return bulletList;
+  }
+
+  public void setBulletList(List<BulletListEntry> bulletList) {
+    this.bulletList = bulletList;
+  }
+
+  public String getFirstName() {
+    return firstName;
+  }
+
+  public void setFirstName(String firstName) {
+    this.firstName = firstName;
+  }
+
+  public String getMiddleName() {
+    return middleName;
+  }
+
+  public void setMiddleName(String middleName) {
+    this.middleName = middleName;
+  }
+
+  public String getLastName() {
+    return lastName;
+  }
+
+  public void setLastName(String lastName) {
+    this.lastName = lastName;
+  }
+
+  public String getPhone() {
+    return phone;
+  }
+
+  public void setPhone(String phone) {
+    this.phone = phone;
+  }
+
+  public String getEmail() {
+    return email;
+  }
+
+  public void setEmail(String email) {
+    this.email = email;
+  }
+
+  public String getHeadline() {
+    return headline;
+  }
+
+  public void setHeadline(String headline) {
+    this.headline = headline;
+  }
+
+  public String getBio() {
+    return bio;
+  }
+
+  public void setBio(String bio) {
+    this.bio = bio;
   }
 
 }

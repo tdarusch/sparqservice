@@ -1,16 +1,13 @@
 package com.sparq.sparqservice.Entities;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.GenerationType;
 
@@ -23,20 +20,16 @@ public class Education {
   @Column(columnDefinition = "serial")
   private Long id;
 
-  @DateTimeFormat(pattern = "MM/yyyy")
-  private Date startDate;
+  @DateTimeFormat(pattern = "MM/dd/yyyy")
+  private LocalDate startDate;
   
-  @DateTimeFormat(pattern = "MM/yyyy")
-  private Date endDate;
+  @DateTimeFormat(pattern = "MM/dd/yyyy")
+  private LocalDate endDate;
 
   private String school;
   private String degree;
   private String fieldOfStudy;
   private String minor;
-
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "profile_id")
-  private Profile profile;
 
   public Long getId() {
     return id;
@@ -46,19 +39,19 @@ public class Education {
     this.id = id;
   }
 
-  public Date getStartDate() {
+  public LocalDate getStartDate() {
     return startDate;
   }
 
-  public void setStartDate(Date startDate) {
+  public void setStartDate(LocalDate startDate) {
     this.startDate = startDate;
   }
 
-  public Date getEndDate() {
+  public LocalDate getEndDate() {
     return endDate;
   }
 
-  public void setEndDate(Date endDate) {
+  public void setEndDate(LocalDate endDate) {
     this.endDate = endDate;
   }
 
@@ -92,14 +85,6 @@ public class Education {
 
   public void setMinor(String minor) {
     this.minor = minor;
-  }
-
-  public Profile getProfile() {
-    return profile;
-  }
-
-  public void setProfile(Profile profile) {
-    this.profile = profile;
   }
 
 }
