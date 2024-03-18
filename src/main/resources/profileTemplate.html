@@ -45,7 +45,7 @@
 						</td>
 						<td>
 							<div style="text-align: right;">
-								<p style="font-size: 12pt; margin: 0"><span th:text="${school.startDate}"></span> - <span th:text="${school.endDate}"></span></p>
+								<p style="font-size: 12pt; margin: 0"><span th:text="${#dates.format(school.startDate, 'dd-MMM-yyyy')}"></span> - <span th:text="${#dates.format(school.endDate, 'dd-MMM-yyyy')}"></span></p>
 							</div>
 						</td>
 					</tr>
