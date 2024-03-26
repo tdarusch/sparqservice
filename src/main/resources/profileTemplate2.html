@@ -1,26 +1,74 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head lang="en"></head>
-<link rel="stylesheet" href="style.css"> 
+<head lang="en">
+<style>
+body {
+    font-family:Georgia, 'Times New Roman', Times, serif;
+}
+
+.Header {
+    float: right; 
+    width: 50%; 
+}
+
+.About {
+    float: left; 
+ 
+    clear: left; 
+}
+
+.Image {
+    padding-top: 5px; 
+    padding-bottom: 200px; /*this is just for testing spacing purposes */
+}
+
+.Jobs {
+    float: right; 
+    width: 50%; 
+}
+
+.Education {
+    float: left; 
+    text-align: left; 
+
+    clear: left; 
+}
+
+.skills {
+    float: right; 
+    width: 50%; 
+
+}
+
+.Projects {
+    float: left; 
+    text-align: left; 
+    clear: left; 
+}
+
+.Footer {
+    float: left; 
+    clear: left; 
+    width: 100%; 
+}
+</style>
+</head>
+
   <body>
     <div class="Header"> 
-        <p style="color: #6db8e3" th:text="${name}"></p>
-        <h1 style="color: #6db8e3"> Ward Tyre </h1>
-        <p th:text="${headline}"></p>
-        <h2> Headline </h2>
-        <h3 style="color: #6db8e3">Contact Information </h3>
-        <p th:text="${contact}"></p>
-        <p> This is a test contact info <br /> this is a new line </p>
+        <h1 style="color: #6db8e3" th:text="${name}"></h1>
+        <i><h2 th:text="${headline}"></h2></i>
+        <b><h3 style="color: #6db8e3">Contact Information </h3></b>
+        <h3 th:text="${contact}"></h3>
     </div>
 
     <div class="Image">
-        <p> this is where the pic will go maybe <br /> pic from google profile</p>
+        <a href="${imageUrl}" style="width:25%; height:50%"></a> 
         
     </div>
 
     <div class="About">
         <h3 style="color: #6db8e3">About Me</h3>
-        <p> brief description of me! </p>
         <p th:text="${bio}"></p>
         <p style="color: #6db8e3">Hobbies</p>
         <div class="hobbies">
@@ -32,13 +80,13 @@
 
     <div class="Jobs">
         <h3 style="color: #6db8e3">Experience</h3>
-        <div th:each="job : workHistory">
+        <div th:each="job : ${workHistory}">
             <table>
                 <tr>
                     <td>
                         <p th:text="${job.role}"></p>
-                        <p style="font-style: italic;" th:text="${job.compnay}"></p>
-                        <p><span th:text="${job.startDate}"></span> - <span th:text="${job.endDate}"></span></p>
+                        <p style="font-style: italic;" th:text="${job.company}"></p>
+                        <p><span th:text="${#temporals.format(job.startDate, 'MM-yyyy')}"></span> - <span th:text="${#temporals.format(job.endDate, 'MM-yyyy')}"></span></p>
                         <p>Responsibilities: <span th:text="${job.responsibilities}"></span></p>
 
                     </td>
@@ -74,13 +122,12 @@
 
     <div class="Projects">
         <h3 style="color: #6db8e3">Notable Projects</h3>
-        <div class="project : ${projects}">
+        <div th:each="project : ${projects}">
         <table>
             <tr>
                 <td>
-                    <p th:text="${project.name}"></p>
-                    <p style="font-style: italic;" th:text="${project.type}"></p>
-                    <p><span th:text="${project.startDate}"></span> - <span th:text="${project.endDate}"></span></p>
+                    <p><span th:text="${project.name}"></span>, <span style="font-style: italic" th:text="${project.type}"></span></p>
+                    <p><span th:text="${#temporals.format(project.startDate, 'MM-yyyy')}"></span> - <span th:text="${#temporals.format((project).endDate, 'MM-yyyy')}"></span></p>
                     <p th:text="${project.description}"></p>
 
                 </td>
@@ -89,6 +136,11 @@
         </div>
     </div>
 
+    <div class="Footer">
+        <div style="margin: 15px 0px; padding: 0px 5px; color: #e8e8e8; background-color: #6db8e3; height: 15px; font-size: 9pt; display: flex; flex-direction: column; justify-content: center">
+            Generated with Sparq Profile Builder
+        </div>
+    </div>
+
     </body>
-</link>
 </html> 
