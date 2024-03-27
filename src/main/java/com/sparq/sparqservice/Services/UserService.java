@@ -3,6 +3,7 @@ package com.sparq.sparqservice.Services;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -300,6 +301,17 @@ public class UserService {
   public void setAdmin(UUID userId, boolean makeAdmin) {
     User user = getUserById(userId);
     user.setAdmin(makeAdmin);
+    userRepo.save(user);
+  }
+
+  public void updateUser(UUID userId, Map<String, String> userDetails) {
+    User user = getUserById(userId);
+    if(userDetails.get("imageUrl") != null) {
+      user.setImageUrl(userDetails.get("imageUrl"));
+    }
+    if(userDetails.get("name") != null) {
+      user.setName(userDetails.get("name"));
+    }
     userRepo.save(user);
   }
 
