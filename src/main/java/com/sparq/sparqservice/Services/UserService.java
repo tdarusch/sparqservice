@@ -304,7 +304,7 @@ public class UserService {
     userRepo.save(user);
   }
 
-  public void updateUser(UUID userId, Map<String, String> userDetails) {
+  public UserDTO updateUser(UUID userId, Map<String, String> userDetails) {
     User user = getUserById(userId);
     if(userDetails.get("imageUrl") != null) {
       user.setImageUrl(userDetails.get("imageUrl"));
@@ -313,6 +313,7 @@ public class UserService {
       user.setName(userDetails.get("name"));
     }
     userRepo.save(user);
+    return getUserInfoDto(userId);
   }
 
 }

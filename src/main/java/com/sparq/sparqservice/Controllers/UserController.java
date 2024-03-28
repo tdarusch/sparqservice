@@ -92,11 +92,11 @@ public class UserController {
   }
 
   @PutMapping(value="/users/{userId}/update", produces = MediaType.APPLICATION_JSON_VALUE)
-  public void updateUser(
+  public UserDTO updateUser(
       @PathVariable UUID userId, 
       @RequestBody Map<String, String> userDetails
     ) {
-    service.updateUser(userId, userDetails);
+    return service.updateUser(userId, userDetails);
   }
 
 }
