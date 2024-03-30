@@ -1,7 +1,10 @@
 package com.sparq.sparqservice.Services;
 
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeSet;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -17,13 +20,25 @@ import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 import org.xhtmlrenderer.pdf.ITextRenderer;
 
 import com.sparq.sparqservice.Entities.Profile;
+import com.sparq.sparqservice.Entities.UtilEntities.JobTechnologyListEntry;
+import com.sparq.sparqservice.Entities.UtilEntities.ProjectTechnologyListEntry;
 import com.sparq.sparqservice.Repositories.ProfileRepository;
+
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 
 @Service
 public class ProfileService {
 
     @Autowired
     ProfileRepository profileRepo;
+
+    @PersistenceContext
+    EntityManager entityManager;
 
     //returns a profile object for a given id
     public Profile getProfileById(Long profileId) {
@@ -120,6 +135,35 @@ public class ProfileService {
             (phone != null ? phone + " " : "")
             + (email != null ? "| " + email : "")
         );
+    }
+
+    public List<String> getTechnologies(String name) {
+        if(name == null) {
+            return new ArrayList<String>();
+        }
+
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+
+        CriteriaQuery<JobTechnologyListEntry> cq = cb.createQuery(JobTechnologyListEntry.class);
+        Root<JobTechnologyListEntry> root = cq.from(JobTechnologyListEntry.class);
+        Predicate predicate = cb.like(cb.upper(root.get("text")), name.toUpperCase() + "%");
+        cq.where(predicate).distinct(true);
+
+        List<String> techs = entityManager.createQuery(cq).setMaxResults(5).getResultList().stream().map(
+            tech -> tech.getText()
+        ).collect(Collectors.toList());
+
+        CriteriaQuery<ProjectTechnologyListEntry> _cq = cb.createQuery(ProjectTechnologyListEntry.class);
+        Root<ProjectTechnologyListEntry> _root = _cq.from(ProjectTechnologyListEntry.class);
+        Predicate _predicate = cb.like(cb.upper(_root.get("text")), name.toUpperCase() + "%");
+        _cq.where(_predicate).distinct(true);
+
+        entityManager.createQuery(_cq).setMaxResults(5).getResultList().stream().forEach(tech -> techs.add(tech.getText()));
+
+        List<String> filteredTechs = techs.stream().map(tech -> tech.strip()).distinct().collect(Collectors.toList());
+        TreeSet<String> unique = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
+        filteredTechs.removeIf(tech -> !unique.add(tech));
+        return filteredTechs;
     }
 
 }
