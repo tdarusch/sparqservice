@@ -40,9 +40,10 @@ public class UserController {
       @RequestParam(required = false) String company,
       @RequestParam(required = false) String school,
       @RequestParam(required = false) String project,
-      @RequestParam(required = false) String skill
+      @RequestParam(required = false) String skill,
+      @RequestParam(required = false) String technology
     ) {
-    return service.getAllUserInfo(userName, admin, userEmail, profileName, bio, profileEmail, phone, headline, company, school, project, skill);
+    return service.getAllUserInfo(userName, admin, userEmail, profileName, bio, profileEmail, phone, headline, company, school, project, skill, technology);
   }
 
   @GetMapping(value = "/users/{userId}/profiles/master", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -61,9 +62,10 @@ public class UserController {
       @RequestParam(required = false) String company,
       @RequestParam(required = false) String school,
       @RequestParam(required = false) String project,
-      @RequestParam(required = false) String skill
+      @RequestParam(required = false) String skill,
+      @RequestParam(required = false) String technology
     ){
-    return service.getAllProfilesInfo(userId, name, bio, email, phone, headline, company, school, project, skill);
+    return service.getAllProfilesInfo(userId, name, bio, email, phone, headline, company, school, project, skill, technology);
   }
   
   @PostMapping(value = "/users/{userId}/profiles", produces = MediaType.APPLICATION_JSON_VALUE)

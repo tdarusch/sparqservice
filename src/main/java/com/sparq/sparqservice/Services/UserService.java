@@ -48,7 +48,7 @@ public class UserService {
   //used for getting list of all users for admins
   public List<UserDTO> getAllUserInfo(String userName, Boolean admin, String userEmail,
     String profileName, String bio, String profileEmail, String phone, String headline,
-    String company, String school, String project, String skill
+    String company, String school, String project, String skill, String technology
   ) {
     
     CriteriaBuilder cb = entityManager.getCriteriaBuilder();
@@ -83,7 +83,7 @@ public class UserService {
       dto.setImageUrl(user.getImageUrl());
       dto.setProfiles(getAllProfilesInfo(
         user.getId(), profileName, bio, profileEmail, phone, 
-        headline, company, school, project, skill
+        headline, company, school, project, skill, technology
       ));
       userDTOs.add(dto);
     }
@@ -112,14 +112,14 @@ public class UserService {
   //returns the name and ID for each profile
   //returns empty array if no profiles matching criteria
   public List<ProfileDTO> getAllProfilesInfo(
-    UUID userId, String name, String bio, String email, String phone, String headline, String company, String school, String project, String skill
+    UUID userId, String name, String bio, String email, String phone, String headline, String company, String school, String project, String skill, String technology
   ) {
     CriteriaBuilder cb = entityManager.getCriteriaBuilder();
     CriteriaQuery<Profile> criteriaQuery = cb.createQuery(Profile.class);
     Root<Profile> root = criteriaQuery.from(Profile.class);
     Predicate predicate = cb.and();
     predicate = buildProfilePredicate(
-      predicate, root, cb, userId, name, bio, email, phone, headline, company, school, project, skill
+      predicate, root, cb, userId, name, bio, email, phone, headline, company, school, project, skill, technology
       );
     criteriaQuery.where(predicate);
     List<Profile> profiles = entityManager.createQuery(criteriaQuery).getResultList();
@@ -140,7 +140,8 @@ public class UserService {
   private Predicate buildProfilePredicate(
     Predicate predicate, Root<Profile> root, CriteriaBuilder cb, 
     UUID userId, String name, String bio, String email, String phone, 
-    String headline, String company, String school, String project, String skill
+    String headline, String company, String school, String project, String skill,
+    String technology
   ){
     predicate = cb.and(predicate, cb.equal(root.get("user").get("id"), userId));
     predicate = cb.and(predicate, cb.equal(root.get("masterProfile"), false));
@@ -178,6 +179,12 @@ public class UserService {
       predicate = cb.and(predicate, cb.like(
           cb.upper(root.join("skills").get("name")), "%"+skill.toUpperCase()+"%"
         ));
+    }
+    if(technology != null) {
+      predicate = cb.and(predicate, cb.or(
+        cb.like(cb.upper(root.join("projects").join("technologies").get("text")), "%"+technology.toUpperCase()+"%"),
+        cb.like(cb.upper(root.join("workHistory").join("technologies").get("text")), "%"+technology.toUpperCase()+"%")
+      ));
     }
     return predicate;
   }
