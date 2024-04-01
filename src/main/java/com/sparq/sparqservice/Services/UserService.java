@@ -46,7 +46,7 @@ public class UserService {
 
   //returns a list of all users' names and ids
   //used for getting list of all users for admins
-  public List<UserDTO> getAllUserInfo(String userName, Boolean admin, String userEmail,
+  public List<UserDTO> getAllUserInfo(String userName, Boolean admin, Boolean enabled, String userEmail,
     String profileName, String bio, String profileEmail, String phone, String headline,
     String company, String school, String project, String skill, String technology
   ) {
@@ -61,6 +61,9 @@ public class UserService {
     }
     if(admin != null) {
       predicate = cb.and(predicate, cb.equal(root.get("admin"), admin));
+    }
+    if(enabled != null) {
+      predicate = cb.and(predicate, cb.equal(root.get("enabled"), enabled));
     }
     if(userEmail != null) {
       predicate = cb.and(predicate, cb.like(cb.upper(root.get("email")), "%"+userEmail.toUpperCase()+"%"));
@@ -77,14 +80,20 @@ public class UserService {
       if(masterProfiles.size() == 0) {
         continue;
       }
+      List<ProfileDTO> profiles = getAllProfilesInfo(
+        user.getId(), profileName, bio, profileEmail, phone, 
+        headline, company, school, project, skill, technology
+      );
+      if(profiles.size() == 0 && (profileName == null && bio == null && profileEmail == null && phone == null && 
+        headline == null && company == null && school == null && project == null && skill == null && technology == null)) 
+      {
+        continue;
+      }
       dto.setName(user.getName());
       dto.setAdmin(user.getAdmin());
       dto.setEmail(user.getEmail());
       dto.setImageUrl(user.getImageUrl());
-      dto.setProfiles(getAllProfilesInfo(
-        user.getId(), profileName, bio, profileEmail, phone, 
-        headline, company, school, project, skill, technology
-      ));
+      dto.setProfiles(profiles);
       userDTOs.add(dto);
     }
 

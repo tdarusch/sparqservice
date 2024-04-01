@@ -31,6 +31,7 @@ public class UserController {
   public List<UserDTO> getUserInfo(
       @RequestParam(required = false) String userName,
       @RequestParam(required = false) Boolean admin,
+      @RequestParam(required = false) Boolean enabled,
       @RequestParam(required = false) String userEmail,
       @RequestParam(required = false) String profileName,
       @RequestParam(required = false) String bio,
@@ -43,7 +44,7 @@ public class UserController {
       @RequestParam(required = false) String skill,
       @RequestParam(required = false) String technology
     ) {
-    return service.getAllUserInfo(userName, admin, userEmail, profileName, bio, profileEmail, phone, headline, company, school, project, skill, technology);
+    return service.getAllUserInfo(userName, admin, enabled, userEmail, profileName, bio, profileEmail, phone, headline, company, school, project, skill, technology);
   }
 
   @GetMapping(value = "/users/{userId}/profiles/master", produces = MediaType.APPLICATION_JSON_VALUE)
