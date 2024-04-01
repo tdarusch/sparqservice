@@ -93,6 +93,7 @@ public class UserService {
       dto.setAdmin(user.getAdmin());
       dto.setEmail(user.getEmail());
       dto.setImageUrl(user.getImageUrl());
+      dto.setEnabled(user.getEnabled());
       dto.setProfiles(profiles);
       userDTOs.add(dto);
     }
