@@ -84,7 +84,7 @@ public class UserService {
         user.getId(), profileName, bio, profileEmail, phone, 
         headline, company, school, project, skill, technology
       );
-      if(profiles.size() == 0 && (profileName == null && bio == null && profileEmail == null && phone == null && 
+      if(profiles.size() == 0 && !(profileName == null && bio == null && profileEmail == null && phone == null && 
         headline == null && company == null && school == null && project == null && skill == null && technology == null)) 
       {
         continue;
