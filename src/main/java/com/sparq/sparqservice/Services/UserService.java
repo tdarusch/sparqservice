@@ -20,6 +20,7 @@ import com.sparq.sparqservice.Entities.User;
 import com.sparq.sparqservice.Entities.UtilEntities.BulletListEntry;
 import com.sparq.sparqservice.Entities.UtilEntities.JobTechnologyListEntry;
 import com.sparq.sparqservice.Entities.UtilEntities.ProfileDTO;
+import com.sparq.sparqservice.Entities.UtilEntities.ProfileDTOPage;
 import com.sparq.sparqservice.Entities.UtilEntities.ProjectTechnologyListEntry;
 import com.sparq.sparqservice.Entities.UtilEntities.UserDTO;
 import com.sparq.sparqservice.Repositories.ProfileRepository;
@@ -94,7 +95,6 @@ public class UserService {
       dto.setEmail(user.getEmail());
       dto.setImageUrl(user.getImageUrl());
       dto.setEnabled(user.getEnabled());
-      dto.setProfiles(profiles);
       userDTOs.add(dto);
     }
 
@@ -129,7 +129,7 @@ public class UserService {
     Root<Profile> root = criteriaQuery.from(Profile.class);
     Predicate predicate = cb.and();
     predicate = buildProfilePredicate(
-      predicate, root, cb, userId, name, bio, email, phone, headline, company, school, project, skill, technology
+      predicate, root, cb, userId, name, bio, email, phone, headline, company, school, project, skill, technology, true
       );
     criteriaQuery.where(predicate);
     List<Profile> profiles = entityManager.createQuery(criteriaQuery).getResultList();
@@ -146,15 +146,53 @@ public class UserService {
     return profileDTOs;    
   }
 
+  public ProfileDTOPage getAllProfilesPage(int pageNumber, int pageSize, UUID userId, String name, 
+  String bio, String email, String phone, String headline, String company, String school, String project, 
+  String skill, String technology) {
+    //Build query and filter profiles
+    CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+    CriteriaQuery<Profile> criteriaQuery = cb.createQuery(Profile.class);
+    Root<Profile> root = criteriaQuery.from(Profile.class);
+    Predicate predicate = cb.and();
+    predicate = buildProfilePredicate(
+      predicate, root, cb, userId, name, bio, email, phone, headline, company, school, project, skill, technology, false
+      );
+    criteriaQuery.where(predicate);
+    List<Profile> profiles = entityManager.createQuery(criteriaQuery).setMaxResults(pageSize).setFirstResult((pageSize * (pageNumber - 1))).getResultList();
+    
+    //Get total query count
+    int totalResults = entityManager.createQuery(criteriaQuery).getResultList().size();
+    
+    //Page metadata
+    ProfileDTOPage pagedResult = new ProfileDTOPage();
+    pagedResult.setPageNumber(pageNumber);
+    pagedResult.setPageSize(pageSize);
+    pagedResult.setTotalResults(totalResults);
+    pagedResult.setLastPage((totalResults/pageSize) + 1);
+
+    List<ProfileDTO> profileDTOs = new ArrayList<ProfileDTO>(); 
+    for(Profile profile : profiles) {
+      ProfileDTO dto = new ProfileDTO();
+      dto.setId(profile.getId());
+      dto.setName(profile.getName());
+      dto.setCreatedDate(profile.getCreatedDate());
+      profileDTOs.add(dto);
+    }
+    pagedResult.setProfiles(profileDTOs);
+    return pagedResult;
+  }
+
   //Filter null values and create a criteria query predicate for searching profiles
   private Predicate buildProfilePredicate(
     Predicate predicate, Root<Profile> root, CriteriaBuilder cb, 
     UUID userId, String name, String bio, String email, String phone, 
     String headline, String company, String school, String project, String skill,
-    String technology
+    String technology, boolean includeMasterProfile
   ){
     predicate = cb.and(predicate, cb.equal(root.get("user").get("id"), userId));
-    predicate = cb.and(predicate, cb.equal(root.get("masterProfile"), false));
+    if(!includeMasterProfile) {
+      predicate = cb.and(predicate, cb.equal(root.get("masterProfile"), false));
+    }
     if(name != null) {
       predicate = cb.and(predicate, cb.like(cb.upper(root.get("name")), "%"+name.toUpperCase()+"%"));
     }

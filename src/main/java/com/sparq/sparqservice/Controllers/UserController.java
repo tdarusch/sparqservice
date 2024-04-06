@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.sparq.sparqservice.Entities.Profile;
 import com.sparq.sparqservice.Entities.UtilEntities.ProfileDTO;
+import com.sparq.sparqservice.Entities.UtilEntities.ProfileDTOPage;
 import com.sparq.sparqservice.Entities.UtilEntities.UserDTO;
 import com.sparq.sparqservice.Services.UserService;
 
@@ -67,6 +68,25 @@ public class UserController {
       @RequestParam(required = false) String technology
     ){
     return service.getAllProfilesInfo(userId, name, bio, email, phone, headline, company, school, project, skill, technology);
+  }
+
+  @GetMapping(value = "/users/{userId}/profiles/page", produces = MediaType.APPLICATION_JSON_VALUE)
+  public ProfileDTOPage getProfileDTOsPage(
+    @PathVariable UUID userId,
+    @RequestParam(required = true) int pageNumber,
+    @RequestParam(required = true) int pageSize,
+    @RequestParam(required = false) String name,
+    @RequestParam(required = false) String bio,
+    @RequestParam(required = false) String email,
+    @RequestParam(required = false) String phone,
+    @RequestParam(required = false) String headline,
+    @RequestParam(required = false) String company,
+    @RequestParam(required = false) String school,
+    @RequestParam(required = false) String project,
+    @RequestParam(required = false) String skill,
+    @RequestParam(required = false) String technology
+  ) {
+    return service.getAllProfilesPage(pageNumber, pageSize, userId, name, bio, email, phone, headline, company, school, project, skill, technology);
   }
   
   @PostMapping(value = "/users/{userId}/profiles", produces = MediaType.APPLICATION_JSON_VALUE)
