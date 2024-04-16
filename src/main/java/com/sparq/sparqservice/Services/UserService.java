@@ -139,6 +139,7 @@ public class UserService {
       ProfileDTO dto = new ProfileDTO();
       dto.setId(profile.getId());
       dto.setName(profile.getName());
+      dto.setMasterProfile(profile.getMasterProfile());
       dto.setCreatedDate(profile.getCreatedDate());
       profileDTOs.add(dto);
     }

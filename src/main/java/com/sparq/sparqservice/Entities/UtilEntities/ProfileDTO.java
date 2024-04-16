@@ -8,6 +8,7 @@ public class ProfileDTO {
   private Long id;
   private String name;
   private LocalDate createdDate;
+  private boolean masterProfile;
 
   public Long getId() {
     return id;
@@ -31,6 +32,14 @@ public class ProfileDTO {
 
   public void setCreatedDate(LocalDate createdDate) {
     this.createdDate = createdDate;
+  }
+
+  public boolean getMasterProfile() {
+    return masterProfile;
+  }
+
+  public void setMasterProfile(boolean masterProfile) {
+    this.masterProfile = masterProfile;
   }
 
 }
