@@ -114,6 +114,16 @@ public class UserController {
     service.setAdmin(userId, false);
   }
 
+  @PostMapping(value="/users/{userId}/enable", produces = MediaType.APPLICATION_JSON_VALUE)
+  public void enableUser(@PathVariable UUID userId) {
+    service.setEnabled(userId, true);
+  }
+
+  @PostMapping(value="/users/{userId}/disable", produces = MediaType.APPLICATION_JSON_VALUE)
+  public void disableUser(@PathVariable UUID userId) {
+    service.setEnabled(userId, false);
+  }
+
   @PutMapping(value="/users/{userId}/update", produces = MediaType.APPLICATION_JSON_VALUE)
   public UserDTO updateUser(
       @PathVariable UUID userId, 

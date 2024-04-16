@@ -360,6 +360,12 @@ public class UserService {
     userRepo.save(user);
   }
 
+  public void setEnabled(UUID userId, boolean enabled) {
+    User user = getUserById(userId);
+    user.setEnabled(enabled);
+    userRepo.save(user);
+  }
+
   public UserDTO updateUser(UUID userId, Map<String, String> userDetails) {
     User user = getUserById(userId);
     if(userDetails.get("imageUrl") != null) {
