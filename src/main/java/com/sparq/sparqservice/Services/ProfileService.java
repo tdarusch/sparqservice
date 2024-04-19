@@ -110,8 +110,9 @@ public class ProfileService {
         ctx.setVariable("education", profile.getEducation());
         ctx.setVariable("workHistory", profile.getWorkHistory());
         ctx.setVariable("projects", profile.getProjects());
+        //ctx.setVariable("imageUrl", user.getImageUrl());
 
-        return templateEngine.process("profileTemplate", ctx);
+        return templateEngine.process("profileTemplate2", ctx);
     }
 
     //helper methods for formatting profile entity into string components
