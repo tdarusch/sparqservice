@@ -110,7 +110,7 @@ public class ProfileService {
         ctx.setVariable("education", profile.getEducation());
         ctx.setVariable("workHistory", profile.getWorkHistory());
         ctx.setVariable("projects", profile.getProjects());
-        //ctx.setVariable("imageUrl", user.getImageUrl());
+        ctx.setVariable("imageUrl", profile.getUser().getImageUrl());
 
         return templateEngine.process(secondary == true ? "profileTemplate2" : "profileTemplate", ctx);
     }
