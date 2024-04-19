@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
@@ -36,8 +37,10 @@ public class SecurityConfig {
       })
       .logout(lo -> {
         lo.logoutRequestMatcher(new AntPathRequestMatcher("/logout"));
-        lo.logoutSuccessUrl("http://localhost:3000/logout/success").deleteCookies("JSESSIONID");
         lo.invalidateHttpSession(true);
+        lo.clearAuthentication(true);
+        SecurityContextHolder.clearContext();
+        lo.logoutSuccessUrl("http://localhost:3000/logout/success").deleteCookies("JSESSIONID");
       })
       .authorizeHttpRequests(c -> {
         c.requestMatchers("**").permitAll();
