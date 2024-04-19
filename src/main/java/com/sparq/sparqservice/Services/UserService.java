@@ -303,4 +303,9 @@ public class UserService {
     userRepo.save(user);
   }
 
+  public boolean isNewUser(UUID userId) {
+    User user = getUserById(userId);
+    return user.getProfiles().size() == 0;
+  }
+
 }

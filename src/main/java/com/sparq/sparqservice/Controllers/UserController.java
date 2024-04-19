@@ -89,4 +89,9 @@ public class UserController {
     service.setAdmin(userId, false);
   }
 
+  @GetMapping(value = "/users/{userId}/isNew", produces = MediaType.APPLICATION_JSON_VALUE)
+  public boolean isNew(@PathVariable UUID userId) {
+    return service.isNewUser(userId);
+  }
+
 }
