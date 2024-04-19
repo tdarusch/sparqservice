@@ -2,6 +2,7 @@ package com.sparq.sparqservice.Services;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
@@ -107,9 +108,12 @@ public class ProfileService {
         ctx.setVariable("bio", profile.getBio());
         ctx.setVariable("bulletList", profile.getBulletList());
         ctx.setVariable("skills", profile.getSkills());
-        ctx.setVariable("education", profile.getEducation());
-        ctx.setVariable("workHistory", profile.getWorkHistory());
-        ctx.setVariable("projects", profile.getProjects());
+        ctx.setVariable("education", 
+            profile.getEducation().stream().sorted((v1, v2) -> v2.getStartDate().compareTo(v1.getStartDate())).collect(Collectors.toList()));
+        ctx.setVariable("workHistory", 
+            profile.getWorkHistory().stream().sorted((v1, v2) -> v2.getStartDate().compareTo(v1.getStartDate())).collect(Collectors.toList()));
+        ctx.setVariable("projects", 
+            profile.getProjects().stream().sorted((v1, v2) -> v2.getStartDate().compareTo(v1.getStartDate())).collect(Collectors.toList()));
         ctx.setVariable("imageUrl", profile.getUser().getImageUrl());
 
         return templateEngine.process(secondary == true ? "profileTemplate2" : "profileTemplate", ctx);
