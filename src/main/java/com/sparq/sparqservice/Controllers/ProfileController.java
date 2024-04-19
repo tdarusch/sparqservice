@@ -5,6 +5,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.sparq.sparqservice.Entities.Profile;
 import com.sparq.sparqservice.Services.ProfileService;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 public class ProfileController {
@@ -37,8 +40,13 @@ public class ProfileController {
     }
 
     @GetMapping(value = "/profiles/{profileId}/pdf", produces = MediaType.APPLICATION_PDF_VALUE)
-    public ResponseEntity<byte[]> getProfilePdf(@PathVariable Long profileId) {
-        return service.generateProfilePdf(profileId);
+    public ResponseEntity<byte[]> getProfilePdf(@PathVariable Long profileId, @RequestParam(required = false) boolean secondary) {
+        return service.generateProfilePdf(profileId, secondary);
+    }
+
+    @GetMapping(value = "/technologies", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<String> getTechnologies(@RequestParam(required = false) String name) {
+        return service.getTechnologies(name);
     }
     
 

@@ -12,6 +12,7 @@ public class UserDTO {
   private String email;
   private String imageUrl;
   private List<ProfileDTO> profiles;
+  private Boolean enabled;
 
   public UUID getId() {
     return id;
@@ -59,6 +60,14 @@ public class UserDTO {
 
   public void setProfiles(List<ProfileDTO> profiles) {
     this.profiles = profiles;
+  }
+
+  public Boolean getEnabled() {
+    return enabled;
+  }
+
+  public void setEnabled(Boolean enabled) {
+    this.enabled = enabled;
   }
 
 }

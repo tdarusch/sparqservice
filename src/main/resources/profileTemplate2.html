@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+<style>
+body {
+    font-family:Georgia, 'Times New Roman', Times, serif;
+}
+
+.Image {
+    padding-top: 5px;
+}
+
+body img{
+    height: 200px; 
+    width: 250px; 
+}
+
+.Left{
+    float: left; 
+    width: 50%; 
+}
+
+.Right{
+    float: right; 
+    width:50%; 
+}
+
+.Footer{
+    float: right; 
+    width: 100%; 
+}
+</style>
+</head>
+
+  <body>
+
+    <div class="Left">
+        <div class="Image">
+            <img th:src="${imageUrl}" style="border-radius: 50%;" alt="test"></img>
+        </div>
+
+        <div class="About">
+            <h3 style="color: #6db8e3">About Me</h3>
+            <p th:text="${bio}"></p>
+            <p style="color: #6db8e3">Hobbies</p>
+            <div class="hobbies">
+                <div th:each="bullet : ${bulletList}">
+                    <li th:text="${bullet.text}"></li>
+                </div>
+            </div>
+        </div>
+
+        <div class="Education">
+            <h3 style="color: #6db8e3">Education</h3>
+            <div th:each="school : ${education}">
+            <table>
+                <tr>
+                    <td>
+                        <div style="text-align: left;">
+                            <p style="font-size: 12pt; margin: 0; padding-bottom: 5px; font-weight: bold;" th:text="${school.school}"></p>
+                            <p style="font-size: 12pt; margin: 0; font-style: italic">Degree: <span th:text="${school.degree}"></span></p>
+                            <p style="font-size: 12pt; margin: 0; font-style: italic">Major: <span th:text="${school.fieldOfStudy}"></span></p>
+                            <p style="font-size: 12pt; margin: 0; font-style: italic">Minor: <span th:text="${school.minor}"></span></p>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+            </div>
+        </div>
+
+        <div class="skills">
+            <h3 style="color: #6db8e3">Technical Skills</h3>
+            <div th:each="skill : ${skills}">
+                <p th:text="${skill.name}"></p>
+            </div>
+        </div>
+    </div>
+
+    <div class= "Right">
+        <div class="Header"> 
+            <h1 style="color: #6db8e3" th:text="${name}"></h1>
+            <i><h2 th:text="${headline}"></h2></i>
+            <b><h3 style="color: #6db8e3">Contact Information </h3></b>
+            <h3 th:text="${contact}"></h3>
+        </div>
+
+        <div class="Jobs">
+            <h3 style="color: #6db8e3">Experience</h3>
+            <div th:each="job : ${workHistory}">
+                <table>
+                    <tr>
+                        <td>
+                            <p th:text="${job.role}"></p>
+                            <p style="font-style: italic;" th:text="${job.company}"></p>
+                            <p><span th:text="${#temporals.format(job.startDate, 'MM-yyyy')}"></span> - <span th:text="${#temporals.format(job.endDate, 'MM-yyyy')}"></span></p>
+                            <p>Responsibilities: <span th:text="${job.responsibilities}"></span></p>
+    
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="Projects">
+            <h3 style="color: #6db8e3">Notable Projects</h3>
+            <div th:each="project : ${projects}">
+            <table>
+                <tr>
+                    <td>
+                        <p><span th:text="${project.name}"></span>, <span style="font-style: italic" th:text="${project.type}"></span></p>
+                        <p><span th:text="${#temporals.format(project.startDate, 'MM-yyyy')}"></span> - <span th:text="${#temporals.format((project).endDate, 'MM-yyyy')}"></span></p>
+                        <p th:text="${project.description}"></p>
+    
+                    </td>
+                </tr>
+            </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="Footer">
+        <div style="margin: 15px 0px; padding: 0px 5px; color: #e8e8e8; background-color: #6db8e3; height: 15px; font-size: 9pt; display: flex; flex-direction: column; justify-content: center">
+            Generated with Sparq Profile Builder
+        </div>
+    </div>
+
+</body>
+</html> 

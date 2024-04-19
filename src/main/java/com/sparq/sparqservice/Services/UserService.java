@@ -3,6 +3,7 @@ package com.sparq.sparqservice.Services;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ import com.sparq.sparqservice.Entities.User;
 import com.sparq.sparqservice.Entities.UtilEntities.BulletListEntry;
 import com.sparq.sparqservice.Entities.UtilEntities.JobTechnologyListEntry;
 import com.sparq.sparqservice.Entities.UtilEntities.ProfileDTO;
+import com.sparq.sparqservice.Entities.UtilEntities.ProfileDTOPage;
 import com.sparq.sparqservice.Entities.UtilEntities.ProjectTechnologyListEntry;
 import com.sparq.sparqservice.Entities.UtilEntities.UserDTO;
 import com.sparq.sparqservice.Repositories.ProfileRepository;
@@ -45,9 +47,9 @@ public class UserService {
 
   //returns a list of all users' names and ids
   //used for getting list of all users for admins
-  public List<UserDTO> getAllUserInfo(String userName, Boolean admin, String userEmail,
+  public List<UserDTO> getAllUserInfo(String userName, Boolean admin, Boolean enabled, String userEmail,
     String profileName, String bio, String profileEmail, String phone, String headline,
-    String company, String school, String project, String skill
+    String company, String school, String project, String skill, String technology
   ) {
     
     CriteriaBuilder cb = entityManager.getCriteriaBuilder();
@@ -60,6 +62,9 @@ public class UserService {
     }
     if(admin != null) {
       predicate = cb.and(predicate, cb.equal(root.get("admin"), admin));
+    }
+    if(enabled != null) {
+      predicate = cb.and(predicate, cb.equal(root.get("enabled"), enabled));
     }
     if(userEmail != null) {
       predicate = cb.and(predicate, cb.like(cb.upper(root.get("email")), "%"+userEmail.toUpperCase()+"%"));
@@ -76,14 +81,20 @@ public class UserService {
       if(masterProfiles.size() == 0) {
         continue;
       }
+      List<ProfileDTO> profiles = getAllProfilesInfo(
+        user.getId(), profileName, bio, profileEmail, phone, 
+        headline, company, school, project, skill, technology
+      );
+      if(profiles.size() == 0 && !(profileName == null && bio == null && profileEmail == null && phone == null && 
+        headline == null && company == null && school == null && project == null && skill == null && technology == null)) 
+      {
+        continue;
+      }
       dto.setName(user.getName());
       dto.setAdmin(user.getAdmin());
       dto.setEmail(user.getEmail());
       dto.setImageUrl(user.getImageUrl());
-      dto.setProfiles(getAllProfilesInfo(
-        user.getId(), profileName, bio, profileEmail, phone, 
-        headline, company, school, project, skill
-      ));
+      dto.setEnabled(user.getEnabled());
       userDTOs.add(dto);
     }
 
@@ -111,14 +122,14 @@ public class UserService {
   //returns the name and ID for each profile
   //returns empty array if no profiles matching criteria
   public List<ProfileDTO> getAllProfilesInfo(
-    UUID userId, String name, String bio, String email, String phone, String headline, String company, String school, String project, String skill
+    UUID userId, String name, String bio, String email, String phone, String headline, String company, String school, String project, String skill, String technology
   ) {
     CriteriaBuilder cb = entityManager.getCriteriaBuilder();
     CriteriaQuery<Profile> criteriaQuery = cb.createQuery(Profile.class);
     Root<Profile> root = criteriaQuery.from(Profile.class);
     Predicate predicate = cb.and();
     predicate = buildProfilePredicate(
-      predicate, root, cb, userId, name, bio, email, phone, headline, company, school, project, skill
+      predicate, root, cb, userId, name, bio, email, phone, headline, company, school, project, skill, technology, true
       );
     criteriaQuery.where(predicate);
     List<Profile> profiles = entityManager.createQuery(criteriaQuery).getResultList();
@@ -128,6 +139,7 @@ public class UserService {
       ProfileDTO dto = new ProfileDTO();
       dto.setId(profile.getId());
       dto.setName(profile.getName());
+      dto.setMasterProfile(profile.getMasterProfile());
       dto.setCreatedDate(profile.getCreatedDate());
       profileDTOs.add(dto);
     }
@@ -135,14 +147,53 @@ public class UserService {
     return profileDTOs;    
   }
 
+  public ProfileDTOPage getAllProfilesPage(int pageNumber, int pageSize, UUID userId, String name, 
+  String bio, String email, String phone, String headline, String company, String school, String project, 
+  String skill, String technology) {
+    //Build query and filter profiles
+    CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+    CriteriaQuery<Profile> criteriaQuery = cb.createQuery(Profile.class);
+    Root<Profile> root = criteriaQuery.from(Profile.class);
+    Predicate predicate = cb.and();
+    predicate = buildProfilePredicate(
+      predicate, root, cb, userId, name, bio, email, phone, headline, company, school, project, skill, technology, false
+      );
+    criteriaQuery.where(predicate);
+    List<Profile> profiles = entityManager.createQuery(criteriaQuery).setMaxResults(pageSize).setFirstResult((pageSize * (pageNumber - 1))).getResultList();
+    
+    //Get total query count
+    int totalResults = entityManager.createQuery(criteriaQuery).getResultList().size();
+    
+    //Page metadata
+    ProfileDTOPage pagedResult = new ProfileDTOPage();
+    pagedResult.setPageNumber(pageNumber);
+    pagedResult.setPageSize(pageSize);
+    pagedResult.setTotalResults(totalResults);
+    pagedResult.setLastPage((totalResults/pageSize) + 1);
+
+    List<ProfileDTO> profileDTOs = new ArrayList<ProfileDTO>(); 
+    for(Profile profile : profiles) {
+      ProfileDTO dto = new ProfileDTO();
+      dto.setId(profile.getId());
+      dto.setName(profile.getName());
+      dto.setCreatedDate(profile.getCreatedDate());
+      profileDTOs.add(dto);
+    }
+    pagedResult.setProfiles(profileDTOs);
+    return pagedResult;
+  }
+
   //Filter null values and create a criteria query predicate for searching profiles
   private Predicate buildProfilePredicate(
     Predicate predicate, Root<Profile> root, CriteriaBuilder cb, 
     UUID userId, String name, String bio, String email, String phone, 
-    String headline, String company, String school, String project, String skill
+    String headline, String company, String school, String project, String skill,
+    String technology, boolean includeMasterProfile
   ){
     predicate = cb.and(predicate, cb.equal(root.get("user").get("id"), userId));
-    predicate = cb.and(predicate, cb.equal(root.get("masterProfile"), false));
+    if(!includeMasterProfile) {
+      predicate = cb.and(predicate, cb.equal(root.get("masterProfile"), false));
+    }
     if(name != null) {
       predicate = cb.and(predicate, cb.like(cb.upper(root.get("name")), "%"+name.toUpperCase()+"%"));
     }
@@ -177,6 +228,12 @@ public class UserService {
       predicate = cb.and(predicate, cb.like(
           cb.upper(root.join("skills").get("name")), "%"+skill.toUpperCase()+"%"
         ));
+    }
+    if(technology != null) {
+      predicate = cb.and(predicate, cb.or(
+        cb.like(cb.upper(root.join("projects").join("technologies").get("text")), "%"+technology.toUpperCase()+"%"),
+        cb.like(cb.upper(root.join("workHistory").join("technologies").get("text")), "%"+technology.toUpperCase()+"%")
+      ));
     }
     return predicate;
   }
@@ -306,6 +363,24 @@ public class UserService {
   public boolean isNewUser(UUID userId) {
     User user = getUserById(userId);
     return user.getProfiles().size() == 0;
+  }
+
+  public void setEnabled(UUID userId, boolean enabled) {
+    User user = getUserById(userId);
+    user.setEnabled(enabled);
+    userRepo.save(user);
+  }
+
+  public UserDTO updateUser(UUID userId, Map<String, String> userDetails) {
+    User user = getUserById(userId);
+    if(userDetails.get("imageUrl") != null) {
+      user.setImageUrl(userDetails.get("imageUrl"));
+    }
+    if(userDetails.get("name") != null) {
+      user.setName(userDetails.get("name"));
+    }
+    userRepo.save(user);
+    return getUserInfoDto(userId);
   }
 
 }
