@@ -40,8 +40,8 @@ public class ProfileController {
     }
 
     @GetMapping(value = "/profiles/{profileId}/pdf", produces = MediaType.APPLICATION_PDF_VALUE)
-    public ResponseEntity<byte[]> getProfilePdf(@PathVariable Long profileId) {
-        return service.generateProfilePdf(profileId);
+    public ResponseEntity<byte[]> getProfilePdf(@PathVariable Long profileId, @RequestParam(required = false) boolean secondary) {
+        return service.generateProfilePdf(profileId, secondary);
     }
 
     @GetMapping(value = "/technologies", produces = MediaType.APPLICATION_JSON_VALUE)

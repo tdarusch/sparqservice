@@ -70,9 +70,9 @@ public class ProfileService {
         profileRepo.deleteById(profileId);
     }
 
-    public ResponseEntity<byte[]> generateProfilePdf(Long profileId) {
+    public ResponseEntity<byte[]> generateProfilePdf(Long profileId, boolean secondary) {
         Profile profile = getProfileById(profileId);
-        String pdfHtml = parseProfileTemplate(profile);
+        String pdfHtml = parseProfileTemplate(profile, secondary);
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
         ITextRenderer renderer = new ITextRenderer();
@@ -90,7 +90,7 @@ public class ProfileService {
         return response;
     }
 
-    private String parseProfileTemplate(Profile profile) {
+    private String parseProfileTemplate(Profile profile, boolean secondary) {
         ClassLoaderTemplateResolver resolver = new ClassLoaderTemplateResolver();
         resolver.setSuffix(".html");
         resolver.setTemplateMode(TemplateMode.HTML);
@@ -112,7 +112,7 @@ public class ProfileService {
         ctx.setVariable("projects", profile.getProjects());
         //ctx.setVariable("imageUrl", user.getImageUrl());
 
-        return templateEngine.process("profileTemplate2", ctx);
+        return templateEngine.process(secondary == true ? "profileTemplate2" : "profileTemplate", ctx);
     }
 
     //helper methods for formatting profile entity into string components
