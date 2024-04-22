@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -12,6 +13,7 @@ import org.springframework.security.oauth2.client.authentication.OAuth2Authentic
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.HttpClientErrorException;
 
 import com.sparq.sparqservice.Entities.User;
 import com.sparq.sparqservice.Repositories.UserRepository;
@@ -41,6 +43,9 @@ public class OAuth2LoginSuccessHandler extends SavedRequestAwareAuthenticationSu
         Authentication securityAuth = new OAuth2AuthenticationToken(newUser, new ArrayList<SimpleGrantedAuthority>(),
                 oAuth2AuthenticationToken.getAuthorizedClientRegistrationId());
         SecurityContextHolder.getContext().setAuthentication(securityAuth);
+        if(!user.getEnabled()) {
+          throw new HttpClientErrorException(HttpStatusCode.valueOf(401));
+        }
         if(user.getImageUrl() == null) {
           user.setImageUrl(picture);
           userRepo.save(user);
