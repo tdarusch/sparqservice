@@ -65,7 +65,7 @@ public class OAuth2LoginSuccessHandler extends SavedRequestAwareAuthenticationSu
       });
 
     this.setAlwaysUseDefaultTargetUrl(true);
-    this.setDefaultTargetUrl("http://localhost:3000/login/success/" + userRepo.findByEmail(email).get().getId());
+    this.setDefaultTargetUrl("https://master--silly-peony-2e8ef3.netlify.app/login/success/" + userRepo.findByEmail(email).get().getId());
     super.onAuthenticationSuccess(request, response, authentication);
   }
 
