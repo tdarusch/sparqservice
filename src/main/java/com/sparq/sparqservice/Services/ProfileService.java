@@ -49,9 +49,9 @@ public class ProfileService {
     //updates profile and returns updated profile object
     public Profile updateProfile(Long profileId, Profile profile) {
         Profile currentProfile = profileRepo.findById(profileId).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Profile with ID " + profileId + " does not exist"));
-        if(profileId != profile.getId()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Request ID does not match ID in body.");
-        }
+        // if(profileId != profile.getId()) {
+        //     throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Request ID does not match ID in body.");
+        // }
 
         profile.setUser(currentProfile.getUser());
 
